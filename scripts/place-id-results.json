@@ -1,0 +1,205 @@
+[
+  {
+    "icao": "KAVX",
+    "storedName": "Airport in the Sky",
+    "found": true,
+    "placeId": "ChIJz5si5J5v3YARkt-Ky_4dfp8",
+    "googleName": "Airport in the Sky Restaurant",
+    "address": "1 Airport Rd, Avalon, CA 90704, USA",
+    "nameMismatch": false
+  },
+  {
+    "icao": "KMYF",
+    "storedName": "94th Aero Squadron",
+    "found": true,
+    "placeId": "ChIJzYIHtKT_24ARXYWXYzHMjJQ",
+    "googleName": "94th Aero Squadron Restaurant & Events",
+    "address": "8885 Balboa Ave, San Diego, CA 92123, USA",
+    "nameMismatch": false
+  },
+  {
+    "icao": "KHAF",
+    "storedName": "Cameron's Pub & Restaurant",
+    "found": true,
+    "placeId": "ChIJiWN7JkQLj4ARfe0bzQO7OOM",
+    "googleName": "Cameron's Pub & Restaurant",
+    "address": "1410 Cabrillo Hwy S, Half Moon Bay, CA 94019, USA",
+    "nameMismatch": false
+  },
+  {
+    "icao": "KSEZ",
+    "storedName": "Mesa Grill",
+    "found": true,
+    "placeId": "ChIJTUgkR8umLYcReX_a7wyurvg",
+    "googleName": "Mesa Grill Sedona",
+    "address": "1185 Airport Rd, Sedona, AZ 86336, USA",
+    "nameMismatch": false
+  },
+  {
+    "icao": "KFFZ",
+    "storedName": "Saguaro Grille",
+    "found": true,
+    "placeId": "ChIJMXLNRLClK4cRRUBwiDmMgts",
+    "googleName": "Falcon Field Airport",
+    "address": "4800 E Falcon Dr, Mesa, AZ 85215, USA",
+    "nameMismatch": true
+  },
+  {
+    "icao": "KSPG",
+    "storedName": "The Hangar Restaurant",
+    "found": true,
+    "placeId": "ChIJTUtvaZrhwogRSkZnTR1DnR8",
+    "googleName": "The Hangar Restaurant & Flight Lounge",
+    "address": "Second Floor Albert Whitted Airport, 540 1st St S, St. Petersburg, FL 33701, USA",
+    "nameMismatch": false
+  },
+  {
+    "icao": "KLAL",
+    "storedName": "Barnstormer Grill",
+    "found": true,
+    "placeId": "ChIJkabQNfCO9IgR_NvZXW3w7iw",
+    "googleName": "Barnstormer's Grill and Event Center",
+    "address": "349 Jonathans Roost Rd, Williamson, GA 30292, USA",
+    "nameMismatch": false
+  },
+  {
+    "icao": "KOSH",
+    "storedName": "Friar Tuck's Inn",
+    "found": true,
+    "placeId": "ChIJqRMFZcDuA4gREqJJAne4vZo",
+    "googleName": "Friar Tuck's",
+    "address": "1651 W South Park Ave, Oshkosh, WI 54902, USA",
+    "nameMismatch": false
+  },
+  {
+    "icao": "KFLD",
+    "storedName": "Pioneer Inn",
+    "found": true,
+    "placeId": "ChIJYzycb1X1A4gRGd94ql48RQU",
+    "googleName": "Days Inn by Wyndham Fond du Lac",
+    "address": "107 N Pioneer Rd, Fond du Lac, WI 54935, USA",
+    "nameMismatch": true
+  },
+  {
+    "icao": "KFDK",
+    "storedName": "The Perfect Landing",
+    "found": true,
+    "placeId": "ChIJPZXn9H7QyYkRLpb0KVjPm1c",
+    "googleName": "Frederick Municipal Airport (FDK)",
+    "address": "310 Aviation Way, Frederick, MD 21701, USA",
+    "nameMismatch": true
+  },
+  {
+    "icao": "KGAI",
+    "storedName": "Vitali's Cafe",
+    "found": true,
+    "placeId": "ChIJ2a_7HTHTt4kR3tKgiYJpTkk",
+    "googleName": "Café Sophie",
+    "address": "Montgomery County Airpark Main Terminal Building Upstairs, 7940 Airpark Rd Suite 201, Gaithersburg, MD 20879, USA",
+    "nameMismatch": true
+  },
+  {
+    "icao": "KFNL",
+    "storedName": "The Hangar at FNL",
+    "found": true,
+    "placeId": "ChIJowSbeV6tbocR04X27QQ0JCI",
+    "googleName": "Northern Colorado Regional Airport",
+    "address": "4900 Earhart Rd, Loveland, CO 80538, USA",
+    "nameMismatch": false
+  },
+  {
+    "icao": "KFLY",
+    "storedName": "Meadow Lake Cafe",
+    "found": true,
+    "placeId": "ChIJsz5TldM2E4cRMOArFclfj5E",
+    "googleName": "Meadow Lake Airport",
+    "address": "8489 Cessna Dr, Peyton, CO 80831, USA",
+    "nameMismatch": false
+  },
+  {
+    "icao": "KGTU",
+    "storedName": "Blue Hangar Cafe",
+    "found": true,
+    "placeId": "ChIJ0VDfna1p3YkR9GIfNoLdzcI",
+    "googleName": "Hangars Cafe",
+    "address": "32 Airway Dr, Lagrangeville, NY 12540, USA",
+    "nameMismatch": true
+  },
+  {
+    "icao": "KTTD",
+    "storedName": "The Black Bear Diner",
+    "found": true,
+    "placeId": "ChIJ54aSrGOYlVQRnjyGFRZlhrc",
+    "googleName": "Black Bear Diner Gresham",
+    "address": "105 NE Burnside Rd, Gresham, OR 97030, USA",
+    "nameMismatch": true
+  },
+  {
+    "icao": "KHEF",
+    "storedName": "The Hangar Bar & Grill",
+    "found": true,
+    "placeId": "ChIJl1jR44detokRybRsrWsWBVM",
+    "googleName": "Washington Manassas Airport",
+    "address": "10600 Harry J Parrish Blvd, Manassas, VA 20110, USA",
+    "nameMismatch": true
+  },
+  {
+    "icao": "KSBP",
+    "storedName": "Spirit of San Luis Restaurant",
+    "found": true,
+    "placeId": "ChIJr0US8bj27IARj2KF4cRaXWI",
+    "googleName": "Spirit of San Luis Restaurant",
+    "address": "925 Airport Dr, San Luis Obispo, CA 93401, USA",
+    "nameMismatch": false
+  },
+  {
+    "icao": "KPAE",
+    "storedName": "The Spotted Cow Grill",
+    "found": true,
+    "placeId": "ChIJUzNtsEef3IkRa6NYLE2pdoA",
+    "googleName": "Spotted Cow Cafe & Grill",
+    "address": "43 Stewart Ave, Roscoe, NY 12776, USA",
+    "nameMismatch": true
+  },
+  {
+    "icao": "KSGJ",
+    "storedName": "Barnstormer Grill",
+    "found": true,
+    "placeId": "ChIJAe_wm-kp5IgR5OH3g_0TQCE",
+    "googleName": "Hangar One Bistro Eatery & Bar",
+    "address": "4900 US-1 North, St. Augustine, FL 32095, USA",
+    "nameMismatch": true
+  },
+  {
+    "icao": "KCDW",
+    "storedName": "Runway Cafe",
+    "found": true,
+    "placeId": "ChIJ8aOP7IH5wokRMS_vD8i-DnQ",
+    "googleName": "Runway Diner",
+    "address": "380 US-46, South Hackensack, NJ 07606, USA",
+    "nameMismatch": false
+  },
+  {
+    "icao": "KPDK",
+    "storedName": "57th Fighter Group Restaurant",
+    "found": true,
+    "placeId": "ChIJc4aS7FsI9YgRhk3Yyqjf9EA",
+    "googleName": "The 57th Fighter Group Restaurant",
+    "address": "3829 Clairmont Rd, Atlanta, GA 30341, USA",
+    "nameMismatch": false
+  },
+  {
+    "icao": "KFTW",
+    "storedName": "The Aeroclub Restaurant",
+    "found": false
+  },
+  {
+    "icao": "KMKO",
+    "storedName": "Arnie's Restaurant",
+    "found": true,
+    "placeId": "ChIJBfVgI6nntYcRY-yqXgDYZ_8",
+    "googleName": "Muskogee-Davis Regional Airport",
+    "address": "Sabre, Muskogee, OK 74403, USA",
+    "nameMismatch": true
+  }
+]
