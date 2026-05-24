@@ -1,30 +1,29 @@
-# Weekend Warrior MVP
+# Weekend Warrior
 
-*Automatically synced with your [v0.app](https://v0.app) deployments*
+Find your next $100 hamburger — on-airport restaurants for GA pilots.
 
-[![Deployed on Vercel](https://img.shields.io/badge/Deployed%20on-Vercel-black?style=for-the-badge&logo=vercel)](https://vercel.com/patmurfwsu-9434s-projects/v0-weekend-warrior-mvp)
-[![Built with v0](https://img.shields.io/badge/Built%20with-v0.app-black?style=for-the-badge)](https://v0.app/chat/su1PSOdXMPX)
+**[Live Demo →](https://weekend-warrior-nextgen-9aknd18nr-patmurfwsu-9434s-projects.vercel.app)**
 
-## Overview
+## Features
 
-This repository will stay in sync with your deployed chats on [v0.app](https://v0.app).
-Any changes you make to your deployed app will be automatically pushed to this repository from [v0.app](https://v0.app).
+- Interactive Google Maps satellite view with airport markers
+- Live METAR weather (VFR/MVFR/IFR/LIFR) per airport via aviationweather.gov
+- Favorites / bookmarking via localStorage
+- Search and filter by airport name, ICAO code, or state
+- Map and list view toggle
+- Nearby airports by geolocation
+- Airport submission form
+- Stripe donation support
 
-## Deployment
+## Stack
 
-Your project is live at:
+- Next.js 16 App Router / React 19
+- Tailwind CSS v4
+- Google Maps JavaScript API v3 + Places API
+- Deployed on Vercel
 
-**[https://vercel.com/patmurfwsu-9434s-projects/v0-weekend-warrior-mvp](https://vercel.com/patmurfwsu-9434s-projects/v0-weekend-warrior-mvp)**
+## Environment Variables
 
-## Build your app
-
-Continue building your app on:
-
-**[https://v0.app/chat/su1PSOdXMPX](https://v0.app/chat/su1PSOdXMPX)**
-
-## How It Works
-
-1. Create and modify your project using [v0.app](https://v0.app)
-2. Deploy your chats from the v0 interface
-3. Changes are automatically pushed to this repository
-4. Vercel deploys the latest version from this repository
+```
+GOOGLE_MAPS_API_KEY=
+```
