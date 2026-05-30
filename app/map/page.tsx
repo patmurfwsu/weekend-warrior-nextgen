@@ -9,8 +9,11 @@ export const metadata: Metadata = {
   description: `Browse ${airports.length} on-airport restaurants on an interactive map. Search by ICAO code, airport name, or state.`,
 }
 
-export default function MapPage() {
+// searchParams is a Promise in Next.js 15+ — must be async/awaited
+export default async function MapPage({ searchParams }: { searchParams: Promise<{ q?: string }> }) {
   const apiKey = process.env.GOOGLE_MAPS_API_KEY || ""
+  const { q } = await searchParams
+  const initialQuery = q ?? ""
 
   return (
     <div className="h-screen flex flex-col overflow-hidden">
@@ -41,7 +44,7 @@ export default function MapPage() {
 
       {/* Explorer: search, filter, map/list toggle */}
       <main className="flex-1 flex flex-col min-h-0">
-        <AirportExplorer airports={airports} apiKey={apiKey} />
+        <AirportExplorer airports={airports} apiKey={apiKey} initialQuery={initialQuery} />
       </main>
     </div>
   )

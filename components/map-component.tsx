@@ -4,7 +4,7 @@ import { useEffect, useRef, useState } from "react"
 import type { Airport } from "@/lib/airport-data"
 import type { WeatherData } from "@/lib/weather"
 import { CATEGORY_STYLES } from "@/lib/weather"
-import { Star } from "lucide-react"
+import { Star, X, Navigation } from "lucide-react"
 
 interface MapComponentProps {
   airports: Airport[]
@@ -34,29 +34,173 @@ declare global {
   }
 }
 
+// Module-level helper — callable from any useEffect after map init
+function makeMarkerIcon(icao: string, fillColor: string) {
+  const svg = `<svg xmlns="http://www.w3.org/2000/svg" width="44" height="54">
+    <circle cx="22" cy="18" r="15" fill="${fillColor}" stroke="white" stroke-width="2.5"/>
+    <text x="22" y="24" text-anchor="middle" font-size="15" fill="white" font-family="sans-serif">✈</text>
+    <text x="22" y="42" text-anchor="middle" font-size="9" font-weight="bold"
+      font-family="monospace,sans-serif" fill="white"
+      stroke="#111" stroke-width="2.5" paint-order="stroke">${icao}</text>
+  </svg>`
+  return {
+    url: "data:image/svg+xml;charset=UTF-8," + encodeURIComponent(svg),
+  }
+}
+
+// Popup content — defined at module scope to avoid React remount on each render
+function PopupContent({
+  airport,
+  placeData,
+  loading,
+  weatherMap,
+  favorites,
+  onToggleFavorite,
+}: {
+  airport: Airport
+  placeData: PlaceData | null
+  loading: boolean
+  weatherMap: Record<string, WeatherData>
+  favorites: Set<string>
+  onToggleFavorite: (icao: string) => void
+}) {
+  const wx = weatherMap[airport.icao]
+  const wxStyle = wx?.category ? CATEGORY_STYLES[wx.category] : null
+
+  return (
+    <>
+      {/* Header row */}
+      <div className="flex items-start justify-between gap-2 mb-1">
+        <div>
+          <h4 className="font-bold text-sm text-gray-900">{airport.restaurant.name}</h4>
+          <p className="text-xs text-gray-500 mt-0.5">{airport.icao} · {airport.name}</p>
+        </div>
+        <button
+          onClick={(e) => { e.stopPropagation(); onToggleFavorite(airport.icao) }}
+          title={favorites.has(airport.icao) ? "Remove from favorites" : "Save to favorites"}
+          className="shrink-0 p-0.5 rounded hover:bg-gray-100 transition-colors"
+        >
+          <Star
+            className={`w-4 h-4 ${
+              favorites.has(airport.icao)
+                ? "fill-yellow-400 text-yellow-400"
+                : "text-gray-400 hover:text-yellow-400"
+            }`}
+          />
+        </button>
+      </div>
+
+      {/* Weather badge */}
+      {wx && wxStyle && (
+        <div className={`flex items-center gap-2 mb-2 px-2 py-1.5 rounded-md text-xs ${wxStyle.badge}`}>
+          <span className="font-bold">{wx.category}</span>
+          {wx.windDir != null && wx.windSpeed != null && (
+            <span>{wx.windDir}° at {wx.windSpeed} kt</span>
+          )}
+          {wx.visibility != null && (
+            <span>{wx.visibility >= 10 ? "10+" : wx.visibility} SM</span>
+          )}
+        </div>
+      )}
+
+      {/* Place details */}
+      {loading ? (
+        <div className="flex items-center justify-center py-6">
+          <div className="animate-spin rounded-full h-6 w-6 border-b-2 border-blue-600" />
+        </div>
+      ) : (
+        <>
+          {placeData?.photoUrl && (
+            <img
+              src={placeData.photoUrl}
+              alt={airport.restaurant.name}
+              className="w-full h-36 object-cover rounded-md mb-2"
+            />
+          )}
+
+          {placeData?.rating && (
+            <div className="flex items-center gap-1 mb-2">
+              <span className="text-sm font-semibold">{placeData.rating}</span>
+              <span className="text-yellow-400 text-sm">
+                {"★".repeat(Math.round(placeData.rating))}
+                {"☆".repeat(5 - Math.round(placeData.rating))}
+              </span>
+              {placeData.totalRatings && (
+                <span className="text-xs text-gray-500">({placeData.totalRatings})</span>
+              )}
+            </div>
+          )}
+
+          {placeData?.reviews && placeData.reviews.length > 0 && (
+            <div className="space-y-2 mb-2">
+              {placeData.reviews.map((review, idx) => (
+                <div key={idx} className="border-t border-gray-100 pt-2">
+                  <div className="flex items-center gap-1 mb-0.5">
+                    <span className="text-xs font-medium text-gray-700">{review.authorName}</span>
+                    <span className="text-xs text-yellow-500">{"★".repeat(review.rating)}</span>
+                  </div>
+                  <p className="text-xs text-gray-600 leading-tight">{review.text}</p>
+                </div>
+              ))}
+            </div>
+          )}
+
+          {(!placeData || (!placeData.photoUrl && !placeData.rating)) && (
+            <p className="text-xs text-gray-500 italic mb-2">{airport.restaurant.description}</p>
+          )}
+
+          <div className="mt-2 pt-2 border-t border-gray-100 flex items-center gap-3">
+            <a
+              href={`https://maps.google.com/maps?q=${airport.lat},${airport.lng}&z=15`}
+              target="_blank"
+              rel="noopener noreferrer"
+              onClick={(e) => e.stopPropagation()}
+              className="inline-flex items-center gap-1.5 px-3 py-1.5 bg-blue-600 text-white text-xs font-semibold rounded hover:bg-blue-700 transition-colors"
+            >
+              <Navigation className="w-3 h-3" />
+              Navigate
+            </a>
+            {placeData?.website && (
+              <a
+                href={placeData.website}
+                target="_blank"
+                rel="noopener noreferrer"
+                onClick={(e) => e.stopPropagation()}
+                className="text-xs text-blue-600 font-medium hover:underline"
+              >
+                Visit website →
+              </a>
+            )}
+          </div>
+        </>
+      )}
+    </>
+  )
+}
+
 export function MapComponent({ airports, filteredIcaos, apiKey, weatherMap, favorites, onToggleFavorite }: MapComponentProps) {
   const mapRef = useRef<HTMLDivElement>(null)
   const mapInstanceRef = useRef<any>(null)
   const markersMapRef = useRef<Map<string, any>>(new Map())
-  const infoWindowRef = useRef<any>(null)
   const placesServiceRef = useRef<any>(null)
+
+  // position: {x,y} = desktop floating popup; position: null = mobile bottom sheet
   const [hoverData, setHoverData] = useState<{
     airport: Airport
     placeData: PlaceData | null
     loading: boolean
-    position: { x: number; y: number; anchor?: "bottom-center" }
+    position: { x: number; y: number } | null
   } | null>(null)
+
   const placeCache = useRef<Map<string, PlaceData>>(new Map())
-  const isOverThumbnailRef = useRef(false)
+  const isOverPopupRef = useRef(false)
   const hideTimeoutRef = useRef<NodeJS.Timeout | null>(null)
 
-  // Stable refs so closures inside initializeMap can read latest values
+  // Stable refs so closures inside initializeMap always read latest values
   const weatherMapRef = useRef<Record<string, WeatherData>>({})
-  const favoritesRef = useRef<Set<string>>(new Set())
   const fetchPlaceDetailsRef = useRef<(placeId: string, airportIcao: string) => void>(() => {})
 
   useEffect(() => { weatherMapRef.current = weatherMap }, [weatherMap])
-  useEffect(() => { favoritesRef.current = favorites }, [favorites])
 
   useEffect(() => {
     fetchPlaceDetailsRef.current = (placeId: string, airportIcao: string) => {
@@ -68,71 +212,77 @@ export function MapComponent({ airports, filteredIcaos, apiKey, weatherMap, favo
       const cached = placeCache.current.get(placeId)
       if (cached) {
         setHoverData((prev) =>
-          prev && prev.airport.icao === airportIcao ? { ...prev, placeData: cached, loading: false } : prev,
+          prev?.airport.icao === airportIcao ? { ...prev, placeData: cached, loading: false } : prev,
         )
         return
       }
 
-      const request = {
-        placeId,
-        fields: ["photos", "rating", "user_ratings_total", "reviews", "website"],
-      }
-
-      placesServiceRef.current.getDetails(request, (place: any, status: any) => {
-        if (status === window.google.maps.places.PlacesServiceStatus.OK && place) {
-          const photoUrl =
-            place.photos && place.photos.length > 0 ? place.photos[0].getUrl({ maxWidth: 300, maxHeight: 200 }) : null
-
-          const reviews = (place.reviews || []).slice(0, 2).map((review: any) => ({
-            authorName: review.author_name,
-            rating: review.rating,
-            text: review.text.length > 100 ? review.text.substring(0, 100) + "..." : review.text,
-            relativeTime: review.relative_time_description,
-          }))
-
-          const placeData: PlaceData = {
-            photoUrl,
-            rating: place.rating || null,
-            totalRatings: place.user_ratings_total || null,
-            website: place.website || null,
-            reviews,
+      placesServiceRef.current.getDetails(
+        { placeId, fields: ["photos", "rating", "user_ratings_total", "reviews", "website"] },
+        (place: any, status: any) => {
+          if (status === window.google.maps.places.PlacesServiceStatus.OK && place) {
+            const placeData: PlaceData = {
+              photoUrl: place.photos?.[0]?.getUrl({ maxWidth: 400, maxHeight: 250 }) ?? null,
+              rating: place.rating ?? null,
+              totalRatings: place.user_ratings_total ?? null,
+              website: place.website ?? null,
+              reviews: (place.reviews ?? []).slice(0, 2).map((r: any) => ({
+                authorName: r.author_name,
+                rating: r.rating,
+                text: r.text.length > 120 ? r.text.slice(0, 120) + "…" : r.text,
+                relativeTime: r.relative_time_description,
+              })),
+            }
+            placeCache.current.set(placeId, placeData)
+            setHoverData((prev) =>
+              prev?.airport.icao === airportIcao ? { ...prev, placeData, loading: false } : prev,
+            )
+          } else {
+            setHoverData((prev) =>
+              prev?.airport.icao === airportIcao
+                ? { ...prev, placeData: { photoUrl: null, rating: null, totalRatings: null, website: null, reviews: [] }, loading: false }
+                : prev,
+            )
           }
-
-          placeCache.current.set(placeId, placeData)
-          setHoverData((prev) =>
-            prev && prev.airport.icao === airportIcao ? { ...prev, placeData, loading: false } : prev,
-          )
-        } else {
-          setHoverData((prev) =>
-            prev && prev.airport.icao === airportIcao
-              ? { ...prev, placeData: { photoUrl: null, rating: null, totalRatings: null, website: null, reviews: [] }, loading: false }
-              : prev,
-          )
-        }
-      })
+        },
+      )
     }
   })
 
+  // Show/hide markers when filter changes
   useEffect(() => {
     markersMapRef.current.forEach((marker, icao) => {
       marker.setVisible(filteredIcaos.has(icao))
     })
   }, [filteredIcaos])
 
+  // Re-color markers when weather data arrives or updates
+  useEffect(() => {
+    if (!window.google?.maps) return
+    markersMapRef.current.forEach((marker, icao) => {
+      const wx = weatherMap[icao]
+      const color = wx?.category ? CATEGORY_STYLES[wx.category].markerHex : "#6b7280"
+      marker.setIcon({
+        ...makeMarkerIcon(icao, color),
+        scaledSize: new window.google.maps.Size(44, 54),
+        anchor: new window.google.maps.Point(22, 18),
+      })
+    })
+  }, [weatherMap])
+
+  // Load Google Maps script once
   useEffect(() => {
     if (!apiKey) return
-
-    if (window.google && window.google.maps) {
+    if (window.google?.maps) {
       initializeMap()
       return
     }
-
     const script = document.createElement("script")
     script.src = `https://maps.googleapis.com/maps/api/js?key=${apiKey}&libraries=places`
     script.async = true
     script.onload = initializeMap
     document.body.appendChild(script)
-  }, [apiKey])
+  }, [apiKey]) // eslint-disable-line react-hooks/exhaustive-deps
 
   const initializeMap = () => {
     if (!mapRef.current || !window.google) return
@@ -140,7 +290,7 @@ export function MapComponent({ airports, filteredIcaos, apiKey, weatherMap, favo
     const centerLat = airports.reduce((sum, a) => sum + a.lat, 0) / airports.length
     const centerLng = airports.reduce((sum, a) => sum + a.lng, 0) / airports.length
 
-    const newMap = new window.google.maps.Map(mapRef.current, {
+    const map = new window.google.maps.Map(mapRef.current, {
       zoom: 4,
       center: { lat: centerLat, lng: centerLng },
       mapTypeId: "satellite",
@@ -148,130 +298,98 @@ export function MapComponent({ airports, filteredIcaos, apiKey, weatherMap, favo
       fullscreenControl: true,
       streetViewControl: false,
     })
-
-    mapInstanceRef.current = newMap
-
-    const service = new window.google.maps.places.PlacesService(newMap)
-    placesServiceRef.current = service
-
-    const newInfoWindow = new window.google.maps.InfoWindow()
-    infoWindowRef.current = newInfoWindow
-
-    const makeIcon = (icao: string) => {
-      const svg = `<svg xmlns="http://www.w3.org/2000/svg" width="44" height="54">
-        <circle cx="22" cy="18" r="15" fill="#3366cc" stroke="white" stroke-width="2.5"/>
-        <text x="22" y="24" text-anchor="middle" font-size="15" fill="white" font-family="sans-serif">✈</text>
-        <text x="22" y="42" text-anchor="middle" font-size="9" font-weight="bold"
-          font-family="monospace,sans-serif" fill="white"
-          stroke="#111" stroke-width="2.5" paint-order="stroke">${icao}</text>
-      </svg>`
-      return {
-        url: "data:image/svg+xml;charset=UTF-8," + encodeURIComponent(svg),
-        scaledSize: new window.google.maps.Size(44, 54),
-        anchor: new window.google.maps.Point(22, 18),
-      }
-    }
+    mapInstanceRef.current = map
+    placesServiceRef.current = new window.google.maps.places.PlacesService(map)
 
     airports.forEach((airport) => {
+      const wx = weatherMapRef.current[airport.icao]
+      const color = wx?.category ? CATEGORY_STYLES[wx.category].markerHex : "#6b7280"
+
       const marker = new window.google.maps.Marker({
         position: { lat: airport.lat, lng: airport.lng },
-        map: newMap,
+        map,
         title: airport.name,
         visible: filteredIcaos.has(airport.icao),
-        icon: makeIcon(airport.icao),
+        icon: {
+          ...makeMarkerIcon(airport.icao, color),
+          scaledSize: new window.google.maps.Size(44, 54),
+          anchor: new window.google.maps.Point(22, 18),
+        },
       })
-
       markersMapRef.current.set(airport.icao, marker)
 
-      marker.addListener("mouseover", () => {
+      const showPopup = (positionOverride?: { x: number; y: number } | null) => {
         if (hideTimeoutRef.current) {
           clearTimeout(hideTimeoutRef.current)
           hideTimeoutRef.current = null
         }
 
-        const projection = newMap.getProjection()
-        const bounds = newMap.getBounds()
-        if (!projection || !bounds) return
+        // positionOverride = null  → bottom sheet
+        // positionOverride = {x,y} → floating popup at those coords
+        // positionOverride = undefined → compute from marker position
+        let position: { x: number; y: number } | null
 
-        const topRight = projection.fromLatLngToPoint(bounds.getNorthEast())
-        const bottomLeft = projection.fromLatLngToPoint(bounds.getSouthWest())
-        const scale = Math.pow(2, newMap.getZoom())
-        const markerPoint = projection.fromLatLngToPoint(marker.getPosition())
+        if (positionOverride === null) {
+          position = null
+        } else if (positionOverride) {
+          position = positionOverride
+        } else {
+          // Compute edge-clamped position from marker screen coords
+          const projection = map.getProjection()
+          const bounds = map.getBounds()
+          if (!projection || !bounds) return
 
-        const x = (markerPoint.x - bottomLeft.x) * scale
-        const y = (markerPoint.y - topRight.y) * scale
+          const topRight = projection.fromLatLngToPoint(bounds.getNorthEast())
+          const bottomLeft = projection.fromLatLngToPoint(bounds.getSouthWest())
+          const scale = Math.pow(2, map.getZoom())
+          const pt = projection.fromLatLngToPoint(marker.getPosition())
 
-        setHoverData({ airport, placeData: null, loading: true, position: { x, y } })
+          const x = (pt.x - bottomLeft.x) * scale
+          const y = (pt.y - topRight.y) * scale
+
+          const POPUP_W = 300
+          const POPUP_H = 380
+          const cW = mapRef.current?.offsetWidth ?? 800
+          const cH = mapRef.current?.offsetHeight ?? 600
+
+          let fx = x + 20
+          let fy = y - POPUP_H / 2
+          if (fx + POPUP_W > cW) fx = x - POPUP_W - 20
+          if (fx < 8) fx = 8
+          if (fy + POPUP_H > cH - 8) fy = cH - POPUP_H - 8
+          if (fy < 8) fy = 8
+
+          position = { x: fx, y: fy }
+        }
+
+        setHoverData({ airport, placeData: null, loading: true, position })
 
         if (airport.restaurant.placeId) {
           fetchPlaceDetailsRef.current(airport.restaurant.placeId, airport.icao)
         } else {
           setHoverData((prev) => (prev ? { ...prev, loading: false } : null))
         }
-      })
+      }
+
+      // Desktop: hover shows floating popup
+      marker.addListener("mouseover", () => showPopup())
 
       marker.addListener("mouseout", () => {
         hideTimeoutRef.current = setTimeout(() => {
-          if (!isOverThumbnailRef.current) setHoverData(null)
-        }, 100)
+          if (!isOverPopupRef.current) setHoverData(null)
+        }, 120)
       })
 
+      // Mobile tap: shows bottom sheet (position = null)
+      // Also fires on desktop click — we check pointer type at call time
       marker.addListener("click", () => {
-        const wx = weatherMapRef.current[airport.icao]
-        const wxStyle = wx?.category ? CATEGORY_STYLES[wx.category] : null
-        const wxBadge = wxStyle && wx?.category
-          ? `<span style="display:inline-block;margin-left:6px;padding:1px 6px;border-radius:4px;font-size:10px;font-weight:700;background:${wxStyle.hex};color:${wxStyle.textHex}">${wx.category}</span>`
-          : ""
-
-        const content = `
-          <div class="p-3 max-w-xs">
-            <div class="flex items-center gap-2 mb-1">
-              <span class="text-xs font-bold bg-blue-100 text-blue-800 px-2 py-0.5 rounded">${airport.icao}</span>
-              <span class="text-xs text-gray-500">${airport.state}</span>
-              ${wxBadge}
-            </div>
-            <p class="text-sm font-semibold text-gray-700 mb-2">${airport.name}</p>
-            <div class="mb-3 pb-3 border-b border-gray-200">
-              <p class="text-sm font-semibold text-gray-900">${airport.restaurant.name}</p>
-              <p class="text-xs text-gray-600 mt-1">${airport.restaurant.description}</p>
-            </div>
-            <a
-              href="https://maps.google.com/maps?q=${airport.lat},${airport.lng}&z=15"
-              target="_blank"
-              rel="noopener noreferrer"
-              class="inline-block px-3 py-1 bg-blue-600 text-white text-xs font-semibold rounded hover:bg-blue-700 transition-colors"
-            >
-              Navigate →
-            </a>
-          </div>
-        `
-        infoWindowRef.current.setContent(content)
-        infoWindowRef.current.open(newMap, marker)
-
-        if (hideTimeoutRef.current) {
-          clearTimeout(hideTimeoutRef.current)
-          hideTimeoutRef.current = null
-        }
-        setHoverData({ airport, placeData: null, loading: true, position: { x: 0, y: 0, anchor: "bottom-center" } })
-        if (airport.restaurant.placeId) {
-          fetchPlaceDetailsRef.current(airport.restaurant.placeId, airport.icao)
-        } else {
-          setHoverData((prev) => (prev ? { ...prev, loading: false } : null))
-        }
+        // Only activate click-to-sheet on touch devices.
+        // On desktop, hover already handles it; eat the click silently.
+        const isTouch = window.matchMedia("(pointer: coarse)").matches
+        if (!isTouch) return
+        showPopup(null)
       })
     })
-  }
-
-  const renderStars = (rating: number) => {
-    const stars = []
-    for (let i = 1; i <= 5; i++) {
-      stars.push(
-        <span key={i} className={i <= Math.round(rating) ? "text-yellow-400" : "text-gray-300"}>
-          ★
-        </span>,
-      )
-    }
-    return stars
   }
 
   if (!apiKey) {
@@ -289,133 +407,71 @@ export function MapComponent({ airports, filteredIcaos, apiKey, weatherMap, favo
     )
   }
 
+  const isBottomSheet = hoverData?.position === null
+
   return (
     <div className="relative w-full h-full">
       <div ref={mapRef} className="w-full h-full min-h-[calc(100vh-200px)]" />
 
-      {hoverData && (
+      {/* Desktop: floating hover popup */}
+      {hoverData && !isBottomSheet && (
         <div
-          className={`absolute z-50 bg-white rounded-lg shadow-xl border border-gray-200 p-3 ${
-            hoverData.placeData?.website ? "cursor-pointer hover:shadow-2xl transition-shadow" : ""
-          }`}
-          style={
-            hoverData.position.anchor === "bottom-center"
-              ? { left: "50%", bottom: 16, transform: "translateX(-50%)", maxWidth: 280 }
-              : { left: hoverData.position.x + 20, top: hoverData.position.y - 10, maxWidth: 280, transform: "translateY(-50%)" }
-          }
+          className="absolute z-50 bg-white rounded-lg shadow-xl border border-gray-200 p-3"
+          style={{ left: hoverData.position!.x, top: hoverData.position!.y, maxWidth: 280 }}
           onMouseEnter={() => {
-            isOverThumbnailRef.current = true
+            isOverPopupRef.current = true
             if (hideTimeoutRef.current) {
               clearTimeout(hideTimeoutRef.current)
               hideTimeoutRef.current = null
             }
           }}
           onMouseLeave={() => {
-            isOverThumbnailRef.current = false
+            isOverPopupRef.current = false
             setHoverData(null)
           }}
-          onClick={() => {
-            if (hoverData.placeData?.website) {
-              window.open(hoverData.placeData.website, "_blank", "noopener,noreferrer")
-            }
-          }}
         >
-          <div className="flex items-start justify-between gap-2 mb-1">
-            <h4 className="font-bold text-sm text-gray-900">{hoverData.airport.restaurant.name}</h4>
-            <button
-              onClick={(e) => { e.stopPropagation(); onToggleFavorite(hoverData.airport.icao) }}
-              title={favorites.has(hoverData.airport.icao) ? "Remove from favorites" : "Save to favorites"}
-              className="shrink-0 p-0.5 rounded hover:bg-gray-100 transition-colors"
-            >
-              <Star
-                className={`w-4 h-4 ${
-                  favorites.has(hoverData.airport.icao)
-                    ? "fill-yellow-400 text-yellow-400"
-                    : "text-gray-400 hover:text-yellow-400"
-                }`}
-              />
-            </button>
-          </div>
-
-          {(() => {
-            const wx = weatherMap[hoverData.airport.icao]
-            const wxStyle = wx?.category ? CATEGORY_STYLES[wx.category] : null
-            if (!wx || !wxStyle) return null
-            return (
-              <div className={`flex items-center gap-2 mb-2 px-2 py-1.5 rounded-md text-xs ${wxStyle.badge}`}>
-                <span className="font-bold">{wx.category}</span>
-                {wx.windDir != null && wx.windSpeed != null && (
-                  <span>{wx.windDir}° at {wx.windSpeed} kt</span>
-                )}
-                {wx.visibility != null && (
-                  <span>{wx.visibility >= 10 ? "10+" : wx.visibility} SM</span>
-                )}
-              </div>
-            )
-          })()}
-
-          {hoverData.loading ? (
-            <div className="flex items-center justify-center py-4">
-              <div className="animate-spin rounded-full h-6 w-6 border-b-2 border-blue-600"></div>
-            </div>
-          ) : (
-            <>
-              {hoverData.placeData?.photoUrl && (
-                <img
-                  src={hoverData.placeData.photoUrl || "/placeholder.svg"}
-                  alt={hoverData.airport.restaurant.name}
-                  className="w-full h-32 object-cover rounded-md mb-2"
-                />
-              )}
-
-              {hoverData.placeData?.rating && (
-                <div className="flex items-center gap-1 mb-2">
-                  <span className="text-sm font-semibold">{hoverData.placeData.rating}</span>
-                  <div className="flex">{renderStars(hoverData.placeData.rating)}</div>
-                  {hoverData.placeData.totalRatings && (
-                    <span className="text-xs text-gray-500">({hoverData.placeData.totalRatings})</span>
-                  )}
-                </div>
-              )}
-
-              {hoverData.placeData?.reviews && hoverData.placeData.reviews.length > 0 && (
-                <div className="space-y-2">
-                  {hoverData.placeData.reviews.map((review, idx) => (
-                    <div key={idx} className="border-t border-gray-100 pt-2">
-                      <div className="flex items-center gap-1 mb-1">
-                        <span className="text-xs font-medium text-gray-700">{review.authorName}</span>
-                        <span className="text-xs text-yellow-500">{"★".repeat(review.rating)}</span>
-                      </div>
-                      <p className="text-xs text-gray-600 leading-tight">{review.text}</p>
-                    </div>
-                  ))}
-                </div>
-              )}
-
-              {hoverData.placeData?.website && (
-                <div className="mt-2 pt-2 border-t border-gray-100">
-                  <p className="text-xs text-blue-600 font-medium">Click to visit website</p>
-                </div>
-              )}
-
-              {!hoverData.placeData?.photoUrl && !hoverData.placeData?.rating && (
-                <p className="text-xs text-gray-500 italic">No Google Places data available</p>
-              )}
-
-              <div className="mt-3 pt-2 border-t border-gray-100">
-                <a
-                  href={`https://maps.google.com/maps?q=${hoverData.airport.lat},${hoverData.airport.lng}&z=15`}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  onClick={(e) => e.stopPropagation()}
-                  className="inline-block px-3 py-1.5 bg-blue-600 text-white text-xs font-semibold rounded hover:bg-blue-700 transition-colors"
-                >
-                  Navigate →
-                </a>
-              </div>
-            </>
-          )}
+          <PopupContent
+            airport={hoverData.airport}
+            placeData={hoverData.placeData}
+            loading={hoverData.loading}
+            weatherMap={weatherMap}
+            favorites={favorites}
+            onToggleFavorite={onToggleFavorite}
+          />
         </div>
+      )}
+
+      {/* Mobile: bottom sheet */}
+      {hoverData && isBottomSheet && (
+        <>
+          <div
+            className="fixed inset-0 z-40 bg-black/40"
+            onClick={() => setHoverData(null)}
+          />
+          <div className="fixed bottom-0 left-0 right-0 z-50 bg-white rounded-t-2xl shadow-2xl max-h-[80vh] overflow-y-auto">
+            {/* Drag handle + close */}
+            <div className="relative flex items-center justify-center pt-4 pb-2 px-4">
+              <div className="w-10 h-1 rounded-full bg-gray-200" />
+              <button
+                onClick={() => setHoverData(null)}
+                className="absolute right-4 p-1.5 rounded-full hover:bg-gray-100 transition-colors text-gray-500"
+                aria-label="Close"
+              >
+                <X className="w-4 h-4" />
+              </button>
+            </div>
+            <div className="px-4 pb-8">
+              <PopupContent
+                airport={hoverData.airport}
+                placeData={hoverData.placeData}
+                loading={hoverData.loading}
+                weatherMap={weatherMap}
+                favorites={favorites}
+                onToggleFavorite={onToggleFavorite}
+              />
+            </div>
+          </div>
+        </>
       )}
     </div>
   )

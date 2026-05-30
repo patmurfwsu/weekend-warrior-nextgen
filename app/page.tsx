@@ -1,7 +1,8 @@
 import Link from "next/link"
-import { Plane, Heart, MapPin, UtensilsCrossed, PlusCircle } from "lucide-react"
+import { Plane, Heart, MapPin, UtensilsCrossed, PlusCircle, Cloud, Utensils } from "lucide-react"
 import { airports } from "@/lib/airport-data"
 import { NearbyAirports } from "@/components/nearby-airports"
+import { HeroSearch } from "@/components/hero-search"
 
 export default function HomePage() {
   return (
@@ -61,6 +62,9 @@ export default function HomePage() {
             Explore the Map
           </Link>
 
+          {/* Hero search */}
+          <HeroSearch />
+
           {/* Secondary link — AllTrails-style underline link */}
           <Link
             href="/submit"
@@ -73,6 +77,70 @@ export default function HomePage() {
 
       {/* ── AIRPORTS NEAR YOU ─────────────────────────────────────── */}
       <NearbyAirports airports={airports} />
+
+      {/* ── HOW IT WORKS ──────────────────────────────────────────── */}
+      <section className="bg-muted/40 py-14 sm:py-20 px-4 sm:px-6 lg:px-8 border-t border-border">
+        <div className="max-w-5xl mx-auto">
+          {/* Section header */}
+          <div className="mb-10 sm:mb-12">
+            <p className="text-xs font-semibold uppercase tracking-widest text-primary mb-2">What is this?</p>
+            <h2 className="text-2xl sm:text-3xl font-bold text-foreground mb-3">
+              Your $100 hamburger, planned in minutes
+            </h2>
+            <p className="text-muted-foreground max-w-2xl leading-relaxed">
+              The <span className="text-foreground font-medium">"$100 hamburger"</span> is a beloved GA tradition —
+              named for the irony that a short local flight burns enough fuel to cost roughly $100 for a $12 burger.
+              Weekend Warrior maps every on-airport restaurant we've found so you can turn a Saturday morning into a
+              proper fly-out with almost no planning.
+            </p>
+          </div>
+
+          {/* 3-step how it works */}
+          <div className="grid sm:grid-cols-3 gap-6 sm:gap-8">
+            <div className="flex gap-4">
+              <div className="shrink-0 w-10 h-10 rounded-full bg-primary/10 flex items-center justify-center">
+                <MapPin className="w-5 h-5 text-primary" />
+              </div>
+              <div>
+                <p className="text-xs font-semibold text-muted-foreground uppercase tracking-wide mb-1">Step 01</p>
+                <h3 className="font-semibold text-foreground mb-1">Pick a destination</h3>
+                <p className="text-sm text-muted-foreground leading-relaxed">
+                  Browse the map or search by airport code, name, or state. Tap any marker for restaurant photos,
+                  ratings, and reviews.
+                </p>
+              </div>
+            </div>
+
+            <div className="flex gap-4">
+              <div className="shrink-0 w-10 h-10 rounded-full bg-primary/10 flex items-center justify-center">
+                <Cloud className="w-5 h-5 text-primary" />
+              </div>
+              <div>
+                <p className="text-xs font-semibold text-muted-foreground uppercase tracking-wide mb-1">Step 02</p>
+                <h3 className="font-semibold text-foreground mb-1">Check the weather</h3>
+                <p className="text-sm text-muted-foreground leading-relaxed">
+                  Live METARs update every 10 minutes. Marker colors tell you at a glance — green is VFR, red is IFR.
+                  Plan your fuel stop around the food.
+                </p>
+              </div>
+            </div>
+
+            <div className="flex gap-4">
+              <div className="shrink-0 w-10 h-10 rounded-full bg-primary/10 flex items-center justify-center">
+                <Utensils className="w-5 h-5 text-primary" />
+              </div>
+              <div>
+                <p className="text-xs font-semibold text-muted-foreground uppercase tracking-wide mb-1">Step 03</p>
+                <h3 className="font-semibold text-foreground mb-1">Land &amp; eat</h3>
+                <p className="text-sm text-muted-foreground leading-relaxed">
+                  Taxi to the ramp, walk in, and order. You've earned your $100 hamburger. Save favorites to build your
+                  own fly-out bucket list.
+                </p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
 
       {/* ── BELOW-FOLD CONTENT ────────────────────────────────────── */}
       <section className="bg-background py-14 sm:py-20 px-4 sm:px-6 lg:px-8">

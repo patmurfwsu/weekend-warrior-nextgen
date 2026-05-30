@@ -1,14 +1,14 @@
 "use client"
 
-import { useEffect, useState } from "react"
+import { useCallback, useEffect, useState } from "react"
 import type { Airport } from "@/lib/airport-data"
-import { MapPin, Navigation, LocateFixed } from "lucide-react"
+import { MapPin, Navigation, LocateFixed, RefreshCw } from "lucide-react"
 
 interface NearbyAirport extends Airport {
   distanceMiles: number
 }
 
-type Status = "loading" | "denied" | "results"
+type Status = "loading" | "denied" | "error" | "results"
 
 function haversine(lat1: number, lng1: number, lat2: number, lng2: number): number {
   const R = 3958.8
@@ -24,11 +24,13 @@ export function NearbyAirports({ airports }: { airports: Airport[] }) {
   const [status, setStatus] = useState<Status>("loading")
   const [nearby, setNearby] = useState<NearbyAirport[]>([])
 
-  useEffect(() => {
+  const locate = useCallback(() => {
     if (!navigator.geolocation) {
       setStatus("denied")
       return
     }
+
+    setStatus("loading")
 
     navigator.geolocation.getCurrentPosition(
       (pos) => {
@@ -41,12 +43,22 @@ export function NearbyAirports({ airports }: { airports: Airport[] }) {
         setNearby(results)
         setStatus("results")
       },
-      () => {
-        setStatus("denied")
+      (err) => {
+        // code 1 = PERMISSION_DENIED (user blocked it — can't retry without browser settings)
+        if (err.code === 1) {
+          setStatus("denied")
+        } else {
+          // code 2 = POSITION_UNAVAILABLE, code 3 = TIMEOUT — retryable
+          setStatus("error")
+        }
       },
       { timeout: 8000 },
     )
   }, [airports])
+
+  useEffect(() => {
+    locate()
+  }, [locate])
 
   return (
     <section className="py-12 sm:py-16 px-4 sm:px-6 lg:px-8 border-t border-border">
@@ -69,9 +81,28 @@ export function NearbyAirports({ airports }: { airports: Airport[] }) {
             <div>
               <p className="text-sm font-medium text-foreground">Location access needed</p>
               <p className="text-xs text-muted-foreground mt-1">
-                Allow location access in your browser to see nearby airports
+                Allow location access in your browser settings to see nearby airports
               </p>
             </div>
+          </div>
+        )}
+
+        {status === "error" && (
+          <div className="flex flex-col items-center gap-4 py-10 text-center rounded-xl border border-dashed border-border">
+            <LocateFixed className="w-8 h-8 text-muted-foreground/50" />
+            <div>
+              <p className="text-sm font-medium text-foreground">Could not determine your location</p>
+              <p className="text-xs text-muted-foreground mt-1">
+                This can happen if GPS timed out or your connection is slow
+              </p>
+            </div>
+            <button
+              onClick={locate}
+              className="inline-flex items-center gap-2 px-4 py-2 text-xs font-semibold rounded-md border border-input bg-background text-foreground hover:bg-muted transition-colors"
+            >
+              <RefreshCw className="w-3.5 h-3.5" />
+              Try Again
+            </button>
           </div>
         )}
 
