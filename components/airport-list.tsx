@@ -1,9 +1,10 @@
 "use client"
 
+import Link from "next/link"
 import type { Airport } from "@/lib/airport-data"
 import type { WeatherData } from "@/lib/weather"
 import { CATEGORY_STYLES } from "@/lib/weather"
-import { MapPin, ExternalLink, Star } from "lucide-react"
+import { MapPin, ExternalLink, Star, Fuel, Clock } from "lucide-react"
 
 interface AirportListProps {
   airports: Airport[]
@@ -36,9 +37,12 @@ export function AirportList({ airports, weatherMap, favorites, onToggleFavorite 
             className="bg-card border border-border rounded-lg px-5 py-4 flex flex-col sm:flex-row sm:items-center gap-3 sm:gap-6"
           >
             <div className="flex items-center gap-3 shrink-0">
-              <span className="text-xs font-bold bg-primary/10 text-primary px-2.5 py-1 rounded font-mono">
+              <Link
+                href={`/airport/${airport.icao.toLowerCase()}`}
+                className="text-xs font-bold bg-primary/10 text-primary px-2.5 py-1 rounded font-mono hover:bg-primary/20 transition-colors"
+              >
                 {airport.icao}
-              </span>
+              </Link>
               <span className="text-xs text-muted-foreground font-medium">{airport.state}</span>
               {wxStyle && wx?.category && (
                 <span className={`text-xs font-bold px-2 py-0.5 rounded ${wxStyle.badge}`}>
@@ -50,7 +54,25 @@ export function AirportList({ airports, weatherMap, favorites, onToggleFavorite 
             <div className="flex-1 min-w-0">
               <p className="text-sm text-muted-foreground truncate">{airport.name}</p>
               <p className="font-semibold text-foreground truncate">{airport.restaurant.name}</p>
-              <p className="text-sm text-muted-foreground mt-0.5 line-clamp-2">{airport.restaurant.description}</p>
+              <p className="text-sm text-muted-foreground mt-0.5 line-clamp-2">
+                {airport.restaurant.description}
+              </p>
+              {(airport.fuel || airport.hours) && (
+                <div className="flex flex-wrap gap-x-4 gap-y-1 mt-1.5">
+                  {airport.fuel && airport.fuel !== "none" && (
+                    <span className="inline-flex items-center gap-1 text-xs text-muted-foreground">
+                      <Fuel className="w-3 h-3" />
+                      {airport.fuel === "both" ? "100LL · Jet-A" : airport.fuel}
+                    </span>
+                  )}
+                  {airport.hours && (
+                    <span className="inline-flex items-center gap-1 text-xs text-muted-foreground">
+                      <Clock className="w-3 h-3" />
+                      {airport.hours}
+                    </span>
+                  )}
+                </div>
+              )}
             </div>
 
             <div className="flex items-center gap-2 shrink-0">

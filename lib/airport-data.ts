@@ -9,6 +9,10 @@ export interface Airport {
   }
   lat: number
   lng: number
+  elevation?: number                              // feet MSL
+  fuel?: "100LL" | "Jet-A" | "both" | "none"
+  hours?: string                                  // restaurant hours, not airport hours
+  runwaySurface?: "asphalt" | "grass" | "concrete"
 }
 
 export const airports: Airport[] = [
@@ -24,6 +28,10 @@ export const airports: Airport[] = [
     },
     lat: 34.2137,
     lng: -119.0943,
+    elevation: 77,
+    fuel: "both",
+    hours: "Daily · breakfast & lunch",
+    runwaySurface: "asphalt",
   },
   {
     icao: "KSZP",
@@ -36,6 +44,10 @@ export const airports: Airport[] = [
     },
     lat: 34.3472,
     lng: -119.0612,
+    elevation: 243,
+    fuel: "100LL",
+    hours: "Daily · breakfast & lunch",
+    runwaySurface: "asphalt",
   },
   {
     icao: "KAVX",
@@ -48,6 +60,10 @@ export const airports: Airport[] = [
     },
     lat: 33.4049,
     lng: -118.4165,
+    elevation: 1602,
+    fuel: "100LL",
+    hours: "Daily · 8am–4pm",
+    runwaySurface: "asphalt",
   },
   {
     icao: "KMYF",
@@ -60,6 +76,10 @@ export const airports: Airport[] = [
     },
     lat: 32.8157,
     lng: -117.1396,
+    elevation: 427,
+    fuel: "both",
+    hours: "Daily · lunch & dinner",
+    runwaySurface: "asphalt",
   },
   {
     icao: "KHAF",
@@ -72,6 +92,10 @@ export const airports: Airport[] = [
     },
     lat: 37.5134,
     lng: -122.5009,
+    elevation: 66,
+    fuel: "100LL",
+    hours: "Daily · lunch & dinner",
+    runwaySurface: "asphalt",
   },
   // Arizona
   {
@@ -85,6 +109,10 @@ export const airports: Airport[] = [
     },
     lat: 34.8486,
     lng: -111.7885,
+    elevation: 4827,
+    fuel: "both",
+    hours: "Daily · breakfast & lunch",
+    runwaySurface: "asphalt",
   },
   // Florida
   {
@@ -98,6 +126,10 @@ export const airports: Airport[] = [
     },
     lat: 30.7789,
     lng: -86.5221,
+    elevation: 235,
+    fuel: "both",
+    hours: "Daily · breakfast & lunch",
+    runwaySurface: "asphalt",
   },
   {
     icao: "KSPG",
@@ -110,6 +142,10 @@ export const airports: Airport[] = [
     },
     lat: 27.7658,
     lng: -82.6268,
+    elevation: 7,
+    fuel: "100LL",
+    hours: "Daily · lunch & dinner",
+    runwaySurface: "asphalt",
   },
   {
     icao: "KLAL",
@@ -122,6 +158,10 @@ export const airports: Airport[] = [
     },
     lat: 27.9889,
     lng: -82.0186,
+    elevation: 142,
+    fuel: "both",
+    hours: "Daily · breakfast & lunch",
+    runwaySurface: "asphalt",
   },
   // Alabama
   {
@@ -135,6 +175,10 @@ export const airports: Airport[] = [
     },
     lat: 31.0425,
     lng: -86.3116,
+    elevation: 310,
+    fuel: "100LL",
+    hours: "Wed–Sun · breakfast & lunch",
+    runwaySurface: "asphalt",
   },
   // Wisconsin
   {
@@ -148,6 +192,10 @@ export const airports: Airport[] = [
     },
     lat: 43.9844,
     lng: -88.5570,
+    elevation: 808,
+    fuel: "both",
+    hours: "Daily · lunch & dinner",
+    runwaySurface: "asphalt",
   },
   // Maryland
   {
@@ -161,8 +209,11 @@ export const airports: Airport[] = [
     },
     lat: 39.1684,
     lng: -77.1660,
+    elevation: 539,
+    fuel: "100LL",
+    hours: "Mon–Fri · breakfast & lunch",
+    runwaySurface: "asphalt",
   },
-  // Maryland
   {
     icao: "KFDK",
     name: "Frederick Municipal Airport",
@@ -173,6 +224,10 @@ export const airports: Airport[] = [
     },
     lat: 39.4176,
     lng: -77.3742,
+    elevation: 303,
+    fuel: "both",
+    hours: "Thu–Sun · lunch & dinner",
+    runwaySurface: "asphalt",
   },
   // California
   {
@@ -186,6 +241,10 @@ export const airports: Airport[] = [
     },
     lat: 35.2368,
     lng: -120.6426,
+    elevation: 212,
+    fuel: "both",
+    hours: "Daily · breakfast & lunch",
+    runwaySurface: "asphalt",
   },
   // Florida
   {
@@ -199,6 +258,10 @@ export const airports: Airport[] = [
     },
     lat: 29.9592,
     lng: -81.3398,
+    elevation: 10,
+    fuel: "both",
+    hours: "Daily · lunch & dinner",
+    runwaySurface: "asphalt",
   },
   // Georgia
   {
@@ -212,5 +275,356 @@ export const airports: Airport[] = [
     },
     lat: 33.8757,
     lng: -84.3022,
+    elevation: 1003,
+    fuel: "both",
+    hours: "Lunch & dinner, closed Mon",
+    runwaySurface: "asphalt",
+  },
+
+  // Oregon
+  {
+    icao: "KSLE",
+    name: "McNary Field",
+    state: "OR",
+    restaurant: {
+      name: "Flight Deck Restaurant & Lounge",
+      description: "Three-sided windowed restaurant on the Salem ramp with Cascade Mountain views. Full menu from eggs Benedict to the Aviator Tenderloin — great for a weekend breakfast or post-flight dinner.",
+    },
+    lat: 44.9095,
+    lng: -123.0029,
+    elevation: 214,
+    fuel: "both",
+    hours: "Mon–Fri · lunch & dinner · Sat–Sun from 8am",
+    runwaySurface: "asphalt",
+  },
+
+  // Washington
+  {
+    icao: "K0S9",
+    name: "Jefferson County International",
+    state: "WA",
+    restaurant: {
+      name: "Spruce Goose Cafe",
+      description: "Community hub since the 1960s on the Port Townsend peninsula. Known for homemade Marionberry pie and hearty breakfasts; 100LL self-serve available around the clock.",
+    },
+    lat: 48.0543,
+    lng: -122.8106,
+    elevation: 108,
+    fuel: "100LL",
+    hours: "Daily · 8am–4pm",
+    runwaySurface: "asphalt",
+  },
+  {
+    icao: "KPWT",
+    name: "Bremerton National Airport",
+    state: "WA",
+    restaurant: {
+      name: "Amelia's Hangar",
+      description: "Steps from the Bremerton ramp with an outdoor patio overlooking the runway. Full American menu, Sunday brunch, and a kids' playground on site.",
+    },
+    lat: 47.4902,
+    lng: -122.7645,
+    elevation: 444,
+    fuel: "both",
+    hours: "Tue–Sun · breakfast & dinner",
+    runwaySurface: "asphalt",
+  },
+
+  // Illinois
+  {
+    icao: "K06C",
+    name: "Schaumburg Regional Airport",
+    state: "IL",
+    restaurant: {
+      name: "Pilot Pete's",
+      description: "The gold standard of Midwest fly-in restaurants — packed with aviation memorabilia and panoramic runway windows. Fuel discount offered with a meal purchase.",
+    },
+    lat: 41.9893,
+    lng: -88.1012,
+    elevation: 801,
+    fuel: "both",
+    hours: "Daily · lunch & dinner",
+    runwaySurface: "asphalt",
+  },
+
+  // Colorado
+  {
+    icao: "KAPA",
+    name: "Centennial Airport",
+    state: "CO",
+    restaurant: {
+      name: "The Perfect Landing",
+      description: "Upscale continental dining on the second floor of Denver Jet Center with panoramic Rocky Mountain views. Piano bar evenings and one of the highest-elevation airport restaurants in the country.",
+    },
+    lat: 39.5702,
+    lng: -104.8490,
+    elevation: 5883,
+    fuel: "both",
+    hours: "Daily · breakfast through dinner",
+    runwaySurface: "asphalt",
+  },
+  {
+    icao: "KGXY",
+    name: "Greeley-Weld County Airport",
+    state: "CO",
+    restaurant: {
+      name: "Captain's Table",
+      description: "Breakfast-and-lunch diner in the Greeley GA terminal with direct ramp access. Taxi in, tie down, and walk straight through the door.",
+    },
+    lat: 40.4374,
+    lng: -104.6330,
+    elevation: 4697,
+    fuel: "both",
+    hours: "Daily · breakfast & lunch",
+    runwaySurface: "asphalt",
+  },
+
+  // Kansas
+  {
+    icao: "KHUT",
+    name: "Hutchinson Regional Airport",
+    state: "KS",
+    restaurant: {
+      name: "Airport Steakhouse & Bar",
+      description: "Open-hearth charcoal steakhouse steps from the ramp in central Kansas. The 24 oz. Cowboy ribeye is legendary; Sunday brunch buffet draws locals and pilots alike.",
+    },
+    lat: 38.0665,
+    lng: -97.8606,
+    elevation: 1543,
+    fuel: "both",
+    hours: "Mon–Sat · lunch & dinner · Sun brunch",
+    runwaySurface: "asphalt",
+  },
+
+  // Oklahoma
+  {
+    icao: "KPNC",
+    name: "Ponca City Regional Airport",
+    state: "OK",
+    restaurant: {
+      name: "Enrique's Mexican Restaurant",
+      description: "Authentic Mexican food in the terminal with direct ramp views — a true pilots' canteen on the Oklahoma plains. Fajitas and enchiladas are the house favorites.",
+    },
+    lat: 36.7319,
+    lng: -97.1006,
+    elevation: 1008,
+    fuel: "both",
+    hours: "Mon–Sat · lunch & dinner",
+    runwaySurface: "asphalt",
+  },
+  {
+    icao: "KADM",
+    name: "Ardmore Municipal Airport",
+    state: "OK",
+    restaurant: {
+      name: "Jake's Joint",
+      description: "Lunch-only gem with rotating blue-plate specials at Ardmore Municipal. A locals-and-pilots secret in southern Oklahoma — arrive early, it fills up fast.",
+    },
+    lat: 34.3030,
+    lng: -97.0197,
+    elevation: 777,
+    fuel: "both",
+    hours: "Mon–Fri · lunch only",
+    runwaySurface: "asphalt",
+  },
+
+  // Texas
+  {
+    icao: "T82",
+    name: "Gillespie County Airport",
+    state: "TX",
+    restaurant: {
+      name: "Airport Diner",
+      description: "1940s chrome diner next to the Hangar Hotel in the Texas Hill Country. Themed menu, retro atmosphere, and overnight rooms on the field — a full weekend destination.",
+    },
+    lat: 30.2429,
+    lng: -98.9086,
+    elevation: 1695,
+    fuel: "both",
+    hours: "Wed–Sun · breakfast & lunch",
+    runwaySurface: "asphalt",
+  },
+  {
+    icao: "KUVA",
+    name: "Garner Field Airport",
+    state: "TX",
+    restaurant: {
+      name: "Hangar 6 Air Cafe",
+      description: "Aviation-themed cafe in a converted WWII training hangar with an outdoor patio, playground, and full bar. A perfect stop when crossing south Texas.",
+    },
+    lat: 29.2114,
+    lng: -99.7437,
+    elevation: 942,
+    fuel: "both",
+    hours: "Wed–Sat · lunch & dinner",
+    runwaySurface: "asphalt",
+  },
+
+  // Arizona (additional)
+  {
+    icao: "KSDL",
+    name: "Scottsdale Airport",
+    state: "AZ",
+    restaurant: {
+      name: "Volanti Restaurant & Lounge",
+      description: "Upscale global cuisine in the Airport Aviation Business Center with floor-to-ceiling taxiway views. Fine dining with no FBO fee — walk from any ramp on the field.",
+    },
+    lat: 33.6229,
+    lng: -111.9112,
+    elevation: 1510,
+    fuel: "both",
+    hours: "Tue–Sun · lunch through late",
+    runwaySurface: "asphalt",
+  },
+  {
+    icao: "KHII",
+    name: "Lake Havasu City Airport",
+    state: "AZ",
+    restaurant: {
+      name: "Hangar 24 Brewery & Grill",
+      description: "Craft brewery with an outdoor ramp-view patio in the Sonoran Desert. House-brewed ales, Arizona green chile burgers, and live music most evenings.",
+    },
+    lat: 34.5711,
+    lng: -114.3584,
+    elevation: 783,
+    fuel: "both",
+    hours: "Daily · lunch & dinner",
+    runwaySurface: "asphalt",
+  },
+
+  // Arkansas
+  {
+    icao: "3M0",
+    name: "Gaston's Airport",
+    state: "AR",
+    restaurant: {
+      name: "Gaston's Restaurant",
+      description: "The original \"Best of the Best\" fly-in resort — a dining room above a 3,200 ft turf strip on the White River. Pan-seared rainbow trout and world-class fly fishing make this a full-weekend destination.",
+    },
+    lat: 36.3493,
+    lng: -92.5570,
+    elevation: 479,
+    fuel: "100LL",
+    hours: "Daily · breakfast through dinner",
+    runwaySurface: "grass",
+  },
+
+  // North Carolina
+  {
+    icao: "5NC3",
+    name: "Gilliam-McConnell Airfield",
+    state: "NC",
+    restaurant: {
+      name: "Pik N Pig BBQ",
+      description: "Award-winning slow-smoked Carolina BBQ beside a private turf runway in the Sandhills. The pitmaster-owner sometimes pumps 100LL personally for fly-in guests.",
+    },
+    lat: 35.3422,
+    lng: -79.4372,
+    elevation: 445,
+    fuel: "100LL",
+    hours: "Thu–Sun · 11am–4pm",
+    runwaySurface: "grass",
+  },
+
+  // Ohio
+  {
+    icao: "KPCW",
+    name: "Erie-Ottawa International Airport",
+    state: "OH",
+    restaurant: {
+      name: "Tin Goose Diner",
+      description: "Restored 1950s O'Mahony stainless diner inside the Liberty Aviation Museum at Port Clinton. Walk in off the ramp, eat classic diner food, and tour WWII warbirds next door.",
+    },
+    lat: 41.5163,
+    lng: -82.8696,
+    elevation: 590,
+    fuel: "both",
+    hours: "Thu–Mon · breakfast & lunch",
+    runwaySurface: "asphalt",
+  },
+
+  // Kentucky
+  {
+    icao: "KLOU",
+    name: "Bowman Field",
+    state: "KY",
+    restaurant: {
+      name: "Bistro Le Relais",
+      description: "Intimate French bistro in the Art Deco 1940s terminal of one of America's oldest continuously operating airports. Casablanca-inspired décor, classic French cuisine, dinner only.",
+    },
+    lat: 38.2280,
+    lng: -85.6637,
+    elevation: 546,
+    fuel: "both",
+    hours: "Dinner Tue–Sun",
+    runwaySurface: "asphalt",
+  },
+
+  // Pennsylvania
+  {
+    icao: "KLBE",
+    name: "Arnold Palmer Regional Airport",
+    state: "PA",
+    restaurant: {
+      name: "DeNunzio's Italian Chophouse & Sinatra Bar",
+      description: "Sinatra-era Italian steakhouse on the second floor with sweeping runway views. Prime-aged steaks, house-made pasta, and a full Sinatra Bar — one of the best fly-in dining rooms in the Northeast.",
+    },
+    lat: 40.2761,
+    lng: -79.4044,
+    elevation: 1185,
+    fuel: "both",
+    hours: "Daily · lunch & dinner",
+    runwaySurface: "asphalt",
+  },
+
+  // Massachusetts
+  {
+    icao: "6B6",
+    name: "Minute Man Air Field",
+    state: "MA",
+    restaurant: {
+      name: "Nancy's Airfield Cafe",
+      description: "Farm-to-table scratch cooking at a GA field 25 miles west of Boston, family-run since 1977. New England classics — clam chowder, lamb burger, Belgian fries — with Friday dinner by reservation.",
+    },
+    lat: 42.4612,
+    lng: -71.5188,
+    elevation: 268,
+    fuel: "100LL",
+    hours: "Wed–Sun · breakfast & lunch",
+    runwaySurface: "asphalt",
+  },
+
+  // Vermont
+  {
+    icao: "B06",
+    name: "Basin Harbor Airport",
+    state: "VT",
+    restaurant: {
+      name: "Red Mill Restaurant",
+      description: "Lakeside pub in a converted 19th-century sawmill at the Basin Harbor Resort on Lake Champlain. No fuel on field — plan a fuel stop at Burlington (KBTV, 25 nm). Open late May through mid-October.",
+    },
+    lat: 44.1915,
+    lng: -73.3584,
+    elevation: 124,
+    fuel: "none",
+    hours: "Daily · lunch & dinner (late May–Oct)",
+    runwaySurface: "grass",
+  },
+
+  // Florida (additional)
+  {
+    icao: "KFXE",
+    name: "Fort Lauderdale Executive Airport",
+    state: "FL",
+    restaurant: {
+      name: "Jet Runway Cafe",
+      description: "Runway-side window seating at one of the nation's busiest GA airports. Famous for chicken and waffles and a crab cake hash breakfast while executive jets depart past your table.",
+    },
+    lat: 26.1973,
+    lng: -80.1707,
+    elevation: 13,
+    fuel: "both",
+    hours: "Daily · breakfast & lunch",
+    runwaySurface: "asphalt",
   },
 ]

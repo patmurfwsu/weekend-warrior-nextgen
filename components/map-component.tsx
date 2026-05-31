@@ -34,7 +34,6 @@ declare global {
   }
 }
 
-// Module-level helper — callable from any useEffect after map init
 function makeMarkerIcon(icao: string, fillColor: string) {
   const svg = `<svg xmlns="http://www.w3.org/2000/svg" width="44" height="54">
     <circle cx="22" cy="18" r="15" fill="${fillColor}" stroke="white" stroke-width="2.5"/>

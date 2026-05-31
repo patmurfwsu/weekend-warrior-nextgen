@@ -9,6 +9,7 @@
     "start": "next start"
   },
   "dependencies": {
+    "@googlemaps/markerclusterer": "^2.6.2",
     "@stripe/react-stripe-js": "5.4.1",
     "@stripe/stripe-js": "8.6.0",
     "@vercel/analytics": "1.3.1",
