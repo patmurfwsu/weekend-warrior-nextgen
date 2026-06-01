@@ -292,6 +292,9 @@ export function MapComponent({ airports, filteredIcaos, apiKey, weatherMap, favo
       streetViewControl: false,
     })
     mapInstanceRef.current = map
+    // Belt-and-suspenders: setOptions after creation overrides any defaults
+    // the Maps API may apply asynchronously after the constructor returns.
+    map.setOptions({ zoomControl: false, fullscreenControl: false, streetViewControl: false, mapTypeControl: false })
     placesServiceRef.current = new window.google.maps.places.PlacesService(map)
 
     airports.forEach((airport) => {
