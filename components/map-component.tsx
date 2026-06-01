@@ -150,12 +150,7 @@ function PopupContent({
           )}
 
           <div className="mt-2 pt-2 border-t border-gray-100 flex items-center gap-3">
-            <NavigateDropdown
-              lat={airport.lat}
-              lng={airport.lng}
-              icao={airport.icao}
-              variant="popup"
-            />
+            <NavigateDropdown icao={airport.icao} variant="popup" />
             {(placeData?.website ?? airport.restaurant.website) && (
               <a
                 href={placeData?.website ?? airport.restaurant.website}

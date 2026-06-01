@@ -99,12 +99,7 @@ export function AirportList({ airports, weatherMap, favorites, onToggleFavorite 
                   <ExternalLink className="w-4 h-4" />
                 </a>
               )}
-              <NavigateDropdown
-                lat={airport.lat}
-                lng={airport.lng}
-                icao={airport.icao}
-                variant="list"
-              />
+              <NavigateDropdown icao={airport.icao} variant="list" />
             </div>
           </div>
         )
