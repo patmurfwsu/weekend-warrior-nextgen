@@ -6,6 +6,7 @@ export interface Airport {
     name: string
     description: string
     placeId?: string
+    website?: string
   }
   lat: number
   lng: number
@@ -25,6 +26,7 @@ export const airports: Airport[] = [
       name: "Waypoint Cafe",
       description: "Popular SoCal fly-in destination with excellent breakfast and lunch.",
       placeId: "ChIJ51cOKpFJ6IAR1yenlNwQQSw",
+      website: "https://www.waypointcafe.com",
     },
     lat: 34.2137,
     lng: -119.0943,
@@ -57,6 +59,7 @@ export const airports: Airport[] = [
       name: "Airport in the Sky Restaurant",
       description: "Legendary hilltop restaurant on Santa Catalina Island. The flight alone is worth it.",
       placeId: "ChIJz5si5J5v3YARkt-Ky_4dfp8",
+      website: "https://www.visitcatalinaisland.com",
     },
     lat: 33.4049,
     lng: -118.4165,
@@ -73,6 +76,7 @@ export const airports: Airport[] = [
       name: "94th Aero Squadron",
       description: "WWII-themed restaurant and a beloved San Diego institution since 1974.",
       placeId: "ChIJzYIHtKT_24ARXYWXYzHMjJQ",
+      website: "https://www.94thaero.com",
     },
     lat: 32.8157,
     lng: -117.1396,
@@ -89,6 +93,7 @@ export const airports: Airport[] = [
       name: "Cameron's Pub & Restaurant",
       description: "British-style pub a short walk from the ramp with great coastal views.",
       placeId: "ChIJiWN7JkQLj4ARfe0bzQO7OOM",
+      website: "https://www.cameronsinn.com",
     },
     lat: 37.5134,
     lng: -122.5009,
@@ -106,6 +111,7 @@ export const airports: Airport[] = [
       name: "Mesa Grill",
       description: "Perched atop Airport Mesa with jaw-dropping red rock views in every direction.",
       placeId: "ChIJTUgkR8umLYcReX_a7wyurvg",
+      website: "https://www.mesagrilledona.com",
     },
     lat: 34.8486,
     lng: -111.7885,
@@ -139,6 +145,7 @@ export const airports: Airport[] = [
       name: "The Hangar Restaurant & Flight Lounge",
       description: "Waterfront dining on Tampa Bay with seaplane activity and stunning sunsets.",
       placeId: "ChIJTUtvaZrhwogRSkZnTR1DnR8",
+      website: "https://www.hangarstpete.com",
     },
     lat: 27.7658,
     lng: -82.6268,
@@ -163,40 +170,6 @@ export const airports: Airport[] = [
     hours: "Daily · breakfast & lunch",
     runwaySurface: "asphalt",
   },
-  // Alabama
-  {
-    icao: "K0J4",
-    name: "Florala Municipal Airport",
-    state: "AL",
-    restaurant: {
-      name: "Blade and Wing Cafe",
-      description: "Southern hospitality with great views of the runway.",
-      placeId: "ChIJdTJHJz3xkYgRCWlvEmFC8qU",
-    },
-    lat: 31.0425,
-    lng: -86.3116,
-    elevation: 310,
-    fuel: "100LL",
-    hours: "Wed–Sun · breakfast & lunch",
-    runwaySurface: "asphalt",
-  },
-  // Wisconsin
-  {
-    icao: "KOSH",
-    name: "Wittman Regional Airport",
-    state: "WI",
-    restaurant: {
-      name: "Friar Tuck's",
-      description: "The go-to spot in Oshkosh — a short hop from the field and legendary during AirVenture week.",
-      placeId: "ChIJqRMFZcDuA4gREqJJAne4vZo",
-    },
-    lat: 43.9844,
-    lng: -88.5570,
-    elevation: 808,
-    fuel: "both",
-    hours: "Daily · lunch & dinner",
-    runwaySurface: "asphalt",
-  },
   // Maryland
   {
     icao: "KGAI",
@@ -219,14 +192,16 @@ export const airports: Airport[] = [
     name: "Frederick Municipal Airport",
     state: "MD",
     restaurant: {
-      name: "The Perfect Landing",
-      description: "Rooftop deck overlooking Frederick's runway — one of the Mid-Atlantic's best fly-in meals.",
+      name: "Airways Inn of Frederick",
+      description: "On-field restaurant at Frederick Municipal serving breakfast, lunch, and dinner with views of the active runway — a Mid-Atlantic pilots' classic.",
+      placeId: "ChIJ6-LnboDayYkRZpSo9o-TlrI",
+      website: "https://www.airwaysinnoffrederick.com",
     },
     lat: 39.4176,
     lng: -77.3742,
     elevation: 303,
     fuel: "both",
-    hours: "Thu–Sun · lunch & dinner",
+    hours: "Daily · breakfast through dinner",
     runwaySurface: "asphalt",
   },
   // California
@@ -272,6 +247,7 @@ export const airports: Airport[] = [
       name: "The 57th Fighter Group Restaurant",
       description: "WWII-themed restaurant at Peachtree-DeKalb with authentic warbird décor and a legendary Sunday brunch.",
       placeId: "ChIJc4aS7FsI9YgRhk3Yyqjf9EA",
+      website: "https://www.57thfightergroup.com",
     },
     lat: 33.8757,
     lng: -84.3022,
@@ -289,6 +265,7 @@ export const airports: Airport[] = [
     restaurant: {
       name: "Flight Deck Restaurant & Lounge",
       description: "Three-sided windowed restaurant on the Salem ramp with Cascade Mountain views. Full menu from eggs Benedict to the Aviator Tenderloin — great for a weekend breakfast or post-flight dinner.",
+      placeId: "ChIJfwpSZLr4v1QRg1phsQCPs3o",
     },
     lat: 44.9095,
     lng: -123.0029,
@@ -306,6 +283,7 @@ export const airports: Airport[] = [
     restaurant: {
       name: "Spruce Goose Cafe",
       description: "Community hub since the 1960s on the Port Townsend peninsula. Known for homemade Marionberry pie and hearty breakfasts; 100LL self-serve available around the clock.",
+      placeId: "ChIJK0Fidzjpj1QRG1okVqHYlug",
     },
     lat: 48.0543,
     lng: -122.8106,
@@ -321,6 +299,8 @@ export const airports: Airport[] = [
     restaurant: {
       name: "Amelia's Hangar",
       description: "Steps from the Bremerton ramp with an outdoor patio overlooking the runway. Full American menu, Sunday brunch, and a kids' playground on site.",
+      placeId: "ChIJxbLlWQc1kFQRIU2toUCwxtk",
+      website: "https://www.ameliashangar.com",
     },
     lat: 47.4902,
     lng: -122.7645,
@@ -338,6 +318,8 @@ export const airports: Airport[] = [
     restaurant: {
       name: "Pilot Pete's",
       description: "The gold standard of Midwest fly-in restaurants — packed with aviation memorabilia and panoramic runway windows. Fuel discount offered with a meal purchase.",
+      placeId: "ChIJm3jVA1upD4gRGygxv8ljzFo",
+      website: "https://www.pilotpetes.com",
     },
     lat: 41.9893,
     lng: -88.1012,
@@ -355,6 +337,8 @@ export const airports: Airport[] = [
     restaurant: {
       name: "The Perfect Landing",
       description: "Upscale continental dining on the second floor of Denver Jet Center with panoramic Rocky Mountain views. Piano bar evenings and one of the highest-elevation airport restaurants in the country.",
+      placeId: "ChIJ2W20tvWFbIcRJqaA-AWcuoI",
+      website: "https://www.perfectlandingrestaurant.com",
     },
     lat: 39.5702,
     lng: -104.8490,
@@ -370,6 +354,7 @@ export const airports: Airport[] = [
     restaurant: {
       name: "Captain's Table",
       description: "Breakfast-and-lunch diner in the Greeley GA terminal with direct ramp access. Taxi in, tie down, and walk straight through the door.",
+      placeId: "ChIJMyj5qPyZbocRM2YqGGQUZx8",
     },
     lat: 40.4374,
     lng: -104.6330,
@@ -387,6 +372,7 @@ export const airports: Airport[] = [
     restaurant: {
       name: "Airport Steakhouse & Bar",
       description: "Open-hearth charcoal steakhouse steps from the ramp in central Kansas. The 24 oz. Cowboy ribeye is legendary; Sunday brunch buffet draws locals and pilots alike.",
+      placeId: "ChIJuVZ6Z-O1pIcRKVRvlloVJL0",
     },
     lat: 38.0665,
     lng: -97.8606,
@@ -404,6 +390,7 @@ export const airports: Airport[] = [
     restaurant: {
       name: "Enrique's Mexican Restaurant",
       description: "Authentic Mexican food in the terminal with direct ramp views — a true pilots' canteen on the Oklahoma plains. Fajitas and enchiladas are the house favorites.",
+      placeId: "ChIJ0_b3cPJfsIcRGWsQjEb0hvU",
     },
     lat: 36.7319,
     lng: -97.1006,
@@ -419,6 +406,7 @@ export const airports: Airport[] = [
     restaurant: {
       name: "Jake's Joint",
       description: "Lunch-only gem with rotating blue-plate specials at Ardmore Municipal. A locals-and-pilots secret in southern Oklahoma — arrive early, it fills up fast.",
+      placeId: "ChIJOVdbM8_UTIYRYVG4y4VHcTI",
     },
     lat: 34.3030,
     lng: -97.0197,
@@ -436,6 +424,8 @@ export const airports: Airport[] = [
     restaurant: {
       name: "Airport Diner",
       description: "1940s chrome diner next to the Hangar Hotel in the Texas Hill Country. Themed menu, retro atmosphere, and overnight rooms on the field — a full weekend destination.",
+      placeId: "ChIJYYPFfT_BW4YRfkJHWYVb9cI",
+      website: "https://www.hangarhotel.com",
     },
     lat: 30.2429,
     lng: -98.9086,
@@ -451,6 +441,8 @@ export const airports: Airport[] = [
     restaurant: {
       name: "Hangar 6 Air Cafe",
       description: "Aviation-themed cafe in a converted WWII training hangar with an outdoor patio, playground, and full bar. A perfect stop when crossing south Texas.",
+      placeId: "ChIJ8XW0g5T6XoYRmqRxvg3UQAM",
+      website: "https://www.hangar6aircafe.com",
     },
     lat: 29.2114,
     lng: -99.7437,
@@ -468,6 +460,7 @@ export const airports: Airport[] = [
     restaurant: {
       name: "Volanti Restaurant & Lounge",
       description: "Upscale global cuisine in the Airport Aviation Business Center with floor-to-ceiling taxiway views. Fine dining with no FBO fee — walk from any ramp on the field.",
+      placeId: "ChIJY9xCXH11K4cReAJzrOYJ_bg",
     },
     lat: 33.6229,
     lng: -111.9112,
@@ -483,6 +476,7 @@ export const airports: Airport[] = [
     restaurant: {
       name: "Hangar 24 Brewery & Grill",
       description: "Craft brewery with an outdoor ramp-view patio in the Sonoran Desert. House-brewed ales, Arizona green chile burgers, and live music most evenings.",
+      placeId: "ChIJb6HEdb_v0YAR6tNTlSYfiP4",
     },
     lat: 34.5711,
     lng: -114.3584,
@@ -500,6 +494,8 @@ export const airports: Airport[] = [
     restaurant: {
       name: "Gaston's Restaurant",
       description: "The original \"Best of the Best\" fly-in resort — a dining room above a 3,200 ft turf strip on the White River. Pan-seared rainbow trout and world-class fly fishing make this a full-weekend destination.",
+      placeId: "ChIJgVbqbj8kzocR2LdzsVmGaL0",
+      website: "https://www.gastons.com",
     },
     lat: 36.3493,
     lng: -92.5570,
@@ -517,6 +513,8 @@ export const airports: Airport[] = [
     restaurant: {
       name: "Pik N Pig BBQ",
       description: "Award-winning slow-smoked Carolina BBQ beside a private turf runway in the Sandhills. The pitmaster-owner sometimes pumps 100LL personally for fly-in guests.",
+      placeId: "ChIJRe8hzkKsVIgRiocHG1rFwdM",
+      website: "https://www.piknpig.com",
     },
     lat: 35.3422,
     lng: -79.4372,
@@ -534,6 +532,8 @@ export const airports: Airport[] = [
     restaurant: {
       name: "Tin Goose Diner",
       description: "Restored 1950s O'Mahony stainless diner inside the Liberty Aviation Museum at Port Clinton. Walk in off the ramp, eat classic diner food, and tour WWII warbirds next door.",
+      placeId: "ChIJ5-NvNghNOogRsdsop0BHrms",
+      website: "https://libertyaviationmuseum.org",
     },
     lat: 41.5163,
     lng: -82.8696,
@@ -551,6 +551,8 @@ export const airports: Airport[] = [
     restaurant: {
       name: "Bistro Le Relais",
       description: "Intimate French bistro in the Art Deco 1940s terminal of one of America's oldest continuously operating airports. Casablanca-inspired décor, classic French cuisine, dinner only.",
+      placeId: "ChIJI1iP40YLaYgRd-C9R8rVJLM",
+      website: "https://www.lerelaisrestaurant.com",
     },
     lat: 38.2280,
     lng: -85.6637,
@@ -568,6 +570,8 @@ export const airports: Airport[] = [
     restaurant: {
       name: "DeNunzio's Italian Chophouse & Sinatra Bar",
       description: "Sinatra-era Italian steakhouse on the second floor with sweeping runway views. Prime-aged steaks, house-made pasta, and a full Sinatra Bar — one of the best fly-in dining rooms in the Northeast.",
+      placeId: "ChIJ5YesNxzTNIgRndor29yFNl0",
+      website: "https://www.denunzios.com",
     },
     lat: 40.2761,
     lng: -79.4044,
@@ -583,8 +587,10 @@ export const airports: Airport[] = [
     name: "Minute Man Air Field",
     state: "MA",
     restaurant: {
-      name: "Nancy's Airfield Cafe",
-      description: "Farm-to-table scratch cooking at a GA field 25 miles west of Boston, family-run since 1977. New England classics — clam chowder, lamb burger, Belgian fries — with Friday dinner by reservation.",
+      name: "Fourth & Field",
+      description: "Scratch-kitchen cafe and bar at Minute Man Airfield, 25 miles west of Boston. Farm-to-table sandwiches, rotating craft taps, and ramp seating — the modern successor to the beloved Nancy's Airfield Cafe.",
+      placeId: "ChIJDXNuhBKT44kRi7hMV4jVWqw",
+      website: "https://www.fourthandfield.com",
     },
     lat: 42.4612,
     lng: -71.5188,
@@ -602,6 +608,8 @@ export const airports: Airport[] = [
     restaurant: {
       name: "Red Mill Restaurant",
       description: "Lakeside pub in a converted 19th-century sawmill at the Basin Harbor Resort on Lake Champlain. No fuel on field — plan a fuel stop at Burlington (KBTV, 25 nm). Open late May through mid-October.",
+      placeId: "ChIJr91TLhCbykwRbV6egkChBUU",
+      website: "https://www.basinharbor.com",
     },
     lat: 44.1915,
     lng: -73.3584,
@@ -619,6 +627,8 @@ export const airports: Airport[] = [
     restaurant: {
       name: "Jet Runway Cafe",
       description: "Runway-side window seating at one of the nation's busiest GA airports. Famous for chicken and waffles and a crab cake hash breakfast while executive jets depart past your table.",
+      placeId: "ChIJI_azIOwD2YgRi1gUwP8ggvU",
+      website: "https://www.jetrunwaycafe.com",
     },
     lat: 26.1973,
     lng: -80.1707,

@@ -116,15 +116,28 @@ export default async function AirportPage({
             </div>
           )}
 
-          <a
-            href={`https://maps.google.com/maps?q=${airport.lat},${airport.lng}&z=15`}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="inline-flex items-center gap-1.5 text-sm font-semibold text-primary hover:underline"
-          >
-            <MapPin className="w-4 h-4" />
-            Get directions
-          </a>
+          <div className="flex items-center gap-4">
+            <a
+              href={`https://maps.google.com/maps?q=${airport.lat},${airport.lng}&z=15`}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="inline-flex items-center gap-1.5 text-sm font-semibold text-primary hover:underline"
+            >
+              <MapPin className="w-4 h-4" />
+              Get directions
+            </a>
+            {airport.restaurant.website && (
+              <a
+                href={airport.restaurant.website}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="inline-flex items-center gap-1.5 text-sm font-semibold text-primary hover:underline"
+              >
+                <ExternalLink className="w-4 h-4" />
+                Restaurant website
+              </a>
+            )}
+          </div>
         </div>
 
         {/* Live weather */}
