@@ -80,7 +80,7 @@ export function AirportList({ airports, weatherMap, favorites, onToggleFavorite 
               <button
                 onClick={() => onToggleFavorite(airport.icao)}
                 title={isFavorite ? "Remove from favorites" : "Save to favorites"}
-                className="p-1.5 rounded hover:bg-muted transition-colors"
+                className="p-1.5 rounded hover:bg-muted transition-colors cursor-pointer"
               >
                 <Star
                   className={`w-4 h-4 transition-colors ${

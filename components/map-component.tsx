@@ -78,7 +78,7 @@ function PopupContent({
         <button
           onClick={(e) => { e.stopPropagation(); onToggleFavorite(airport.icao) }}
           title={favorites.has(airport.icao) ? "Remove from favorites" : "Save to favorites"}
-          className="shrink-0 p-0.5 rounded hover:bg-gray-100 transition-colors"
+          className="shrink-0 p-0.5 rounded hover:bg-gray-100 transition-colors cursor-pointer"
         >
           <Star
             className={`w-4 h-4 ${
@@ -286,15 +286,9 @@ export function MapComponent({ airports, filteredIcaos, apiKey, weatherMap, favo
       zoom: 4,
       center: { lat: centerLat, lng: centerLng },
       mapTypeId: "satellite",
-      mapTypeControl: false,
-      zoomControl: false,
-      fullscreenControl: false,
-      streetViewControl: false,
+      disableDefaultUI: true,   // kills ALL native controls; we supply our own
     })
     mapInstanceRef.current = map
-    // Belt-and-suspenders: setOptions after creation overrides any defaults
-    // the Maps API may apply asynchronously after the constructor returns.
-    map.setOptions({ zoomControl: false, fullscreenControl: false, streetViewControl: false, mapTypeControl: false })
     placesServiceRef.current = new window.google.maps.places.PlacesService(map)
 
     airports.forEach((airport) => {
@@ -430,7 +424,7 @@ export function MapComponent({ airports, filteredIcaos, apiKey, weatherMap, favo
             if (m) m.setZoom((m.getZoom() ?? 4) + 1)
           }}
           aria-label="Zoom in"
-          className="w-9 h-9 bg-white rounded shadow-md border border-gray-300 flex items-center justify-center hover:bg-gray-50 transition-colors text-gray-700"
+          className="w-9 h-9 bg-white rounded shadow-md border border-gray-300 flex items-center justify-center hover:bg-gray-50 transition-colors text-gray-700 cursor-pointer"
         >
           <Plus className="w-4 h-4" />
         </button>
@@ -440,7 +434,7 @@ export function MapComponent({ airports, filteredIcaos, apiKey, weatherMap, favo
             if (m) m.setZoom((m.getZoom() ?? 4) - 1)
           }}
           aria-label="Zoom out"
-          className="w-9 h-9 bg-white rounded shadow-md border border-gray-300 flex items-center justify-center hover:bg-gray-50 transition-colors text-gray-700"
+          className="w-9 h-9 bg-white rounded shadow-md border border-gray-300 flex items-center justify-center hover:bg-gray-50 transition-colors text-gray-700 cursor-pointer"
         >
           <Minus className="w-4 h-4" />
         </button>
@@ -448,7 +442,7 @@ export function MapComponent({ airports, filteredIcaos, apiKey, weatherMap, favo
           onClick={handleGoToLocation}
           disabled={locating}
           aria-label="Go to my location"
-          className="w-9 h-9 bg-white rounded shadow-md border border-gray-300 flex items-center justify-center hover:bg-gray-50 transition-colors mt-1 disabled:opacity-50"
+          className="w-9 h-9 bg-white rounded shadow-md border border-gray-300 flex items-center justify-center hover:bg-gray-50 transition-colors mt-1 cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed"
         >
           <LocateFixed className={`w-4 h-4 text-blue-600 ${locating ? "animate-pulse" : ""}`} />
         </button>

@@ -117,7 +117,7 @@ export function AirportExplorer({ airports, apiKey, initialQuery = "" }: Airport
             {query && (
               <button
                 onClick={() => setQuery("")}
-                className="absolute right-2 top-1/2 -translate-y-1/2 text-muted-foreground hover:text-foreground transition-colors"
+                className="absolute right-2 top-1/2 -translate-y-1/2 text-muted-foreground hover:text-foreground transition-colors cursor-pointer"
                 aria-label="Clear search"
               >
                 <X className="w-3.5 h-3.5" />
@@ -129,7 +129,7 @@ export function AirportExplorer({ airports, apiKey, initialQuery = "" }: Airport
           <select
             value={stateFilter}
             onChange={(e) => setStateFilter(e.target.value)}
-            className="hidden sm:block py-1.5 pl-3 pr-8 text-sm border border-input rounded-md bg-background text-foreground focus:outline-none focus:ring-2 focus:ring-ring"
+            className="hidden sm:block py-1.5 pl-3 pr-8 text-sm border border-input rounded-md bg-background text-foreground focus:outline-none focus:ring-2 focus:ring-ring cursor-pointer"
           >
             <option value="">All states</option>
             {US_STATES.filter((s) => presentStates.has(s)).map((s) => (
@@ -140,7 +140,7 @@ export function AirportExplorer({ airports, apiKey, initialQuery = "" }: Airport
           {/* Favorites filter — desktop */}
           <button
             onClick={() => setShowFavoritesOnly((v) => !v)}
-            className={`hidden sm:flex items-center gap-1.5 px-3 py-1.5 text-xs font-semibold rounded-md border transition-colors ${
+            className={`hidden sm:flex items-center gap-1.5 px-3 py-1.5 text-xs font-semibold rounded-md border transition-colors cursor-pointer ${
               showFavoritesOnly
                 ? "bg-yellow-50 border-yellow-300 text-yellow-700"
                 : "border-input text-muted-foreground hover:text-foreground"
@@ -162,8 +162,8 @@ export function AirportExplorer({ airports, apiKey, initialQuery = "" }: Airport
               !weatherLoaded
                 ? "border-input text-muted-foreground/40 cursor-not-allowed"
                 : showVfrOnly
-                ? "bg-green-50 border-green-300 text-green-700"
-                : "border-input text-muted-foreground hover:text-foreground"
+                ? "bg-green-50 border-green-300 text-green-700 cursor-pointer"
+                : "border-input text-muted-foreground hover:text-foreground cursor-pointer"
             }`}
           >
             VFR Only
@@ -172,7 +172,7 @@ export function AirportExplorer({ airports, apiKey, initialQuery = "" }: Airport
           {/* Mobile: Filters toggle */}
           <button
             onClick={() => setShowFilters((v) => !v)}
-            className={`relative sm:hidden flex items-center gap-1.5 px-3 py-1.5 text-xs font-semibold rounded-md border transition-colors ${
+            className={`relative sm:hidden flex items-center gap-1.5 px-3 py-1.5 text-xs font-semibold rounded-md border transition-colors cursor-pointer ${
               showFilters
                 ? "bg-primary/10 border-primary/40 text-primary"
                 : "border-input text-muted-foreground hover:text-foreground"
@@ -195,7 +195,7 @@ export function AirportExplorer({ airports, apiKey, initialQuery = "" }: Airport
             <select
               value={sortOrder}
               onChange={(e) => setSortOrder(e.target.value as SortOrder)}
-              className="hidden sm:block py-1.5 pl-3 pr-8 text-sm border border-input rounded-md bg-background text-foreground focus:outline-none focus:ring-2 focus:ring-ring"
+              className="hidden sm:block py-1.5 pl-3 pr-8 text-sm border border-input rounded-md bg-background text-foreground focus:outline-none focus:ring-2 focus:ring-ring cursor-pointer"
             >
               <option value="name-asc">A – Z</option>
               <option value="state">By state</option>
@@ -208,7 +208,7 @@ export function AirportExplorer({ airports, apiKey, initialQuery = "" }: Airport
             onClick={() => setRefreshKey((k) => k + 1)}
             disabled={weatherLoading}
             title="Refresh weather"
-            className="p-1.5 rounded-md border border-input text-muted-foreground hover:text-foreground hover:bg-muted transition-colors disabled:opacity-40"
+            className="p-1.5 rounded-md border border-input text-muted-foreground hover:text-foreground hover:bg-muted transition-colors cursor-pointer disabled:opacity-40 disabled:cursor-not-allowed"
           >
             <RefreshCw className={`w-3.5 h-3.5 ${weatherLoading ? "animate-spin" : ""}`} />
           </button>
@@ -217,7 +217,7 @@ export function AirportExplorer({ airports, apiKey, initialQuery = "" }: Airport
           <div className="flex items-center gap-1 bg-muted rounded-md p-1">
             <button
               onClick={() => setView("map")}
-              className={`flex items-center gap-1.5 px-3 py-1 text-xs font-medium rounded transition-colors ${
+              className={`flex items-center gap-1.5 px-3 py-1 text-xs font-medium rounded transition-colors cursor-pointer ${
                 view === "map"
                   ? "bg-card text-foreground shadow-sm"
                   : "text-muted-foreground hover:text-foreground"
@@ -246,7 +246,7 @@ export function AirportExplorer({ airports, apiKey, initialQuery = "" }: Airport
             <select
               value={stateFilter}
               onChange={(e) => setStateFilter(e.target.value)}
-              className="py-1.5 pl-3 pr-8 text-sm border border-input rounded-md bg-background text-foreground focus:outline-none focus:ring-2 focus:ring-ring"
+              className="py-1.5 pl-3 pr-8 text-sm border border-input rounded-md bg-background text-foreground focus:outline-none focus:ring-2 focus:ring-ring cursor-pointer"
             >
               <option value="">All states</option>
               {US_STATES.filter((s) => presentStates.has(s)).map((s) => (
@@ -255,7 +255,7 @@ export function AirportExplorer({ airports, apiKey, initialQuery = "" }: Airport
             </select>
             <button
               onClick={() => setShowFavoritesOnly((v) => !v)}
-              className={`flex items-center gap-1.5 px-3 py-1.5 text-xs font-semibold rounded-md border transition-colors ${
+              className={`flex items-center gap-1.5 px-3 py-1.5 text-xs font-semibold rounded-md border transition-colors cursor-pointer ${
                 showFavoritesOnly
                   ? "bg-yellow-50 border-yellow-300 text-yellow-700"
                   : "border-input text-muted-foreground hover:text-foreground"
@@ -271,8 +271,8 @@ export function AirportExplorer({ airports, apiKey, initialQuery = "" }: Airport
                 !weatherLoaded
                   ? "border-input text-muted-foreground/40 cursor-not-allowed"
                   : showVfrOnly
-                  ? "bg-green-50 border-green-300 text-green-700"
-                  : "border-input text-muted-foreground hover:text-foreground"
+                  ? "bg-green-50 border-green-300 text-green-700 cursor-pointer"
+                  : "border-input text-muted-foreground hover:text-foreground cursor-pointer"
               }`}
             >
               VFR Only
@@ -281,7 +281,7 @@ export function AirportExplorer({ airports, apiKey, initialQuery = "" }: Airport
               <select
                 value={sortOrder}
                 onChange={(e) => setSortOrder(e.target.value as SortOrder)}
-                className="py-1.5 pl-3 pr-8 text-sm border border-input rounded-md bg-background text-foreground focus:outline-none focus:ring-2 focus:ring-ring"
+                className="py-1.5 pl-3 pr-8 text-sm border border-input rounded-md bg-background text-foreground focus:outline-none focus:ring-2 focus:ring-ring cursor-pointer"
               >
                 <option value="name-asc">A – Z</option>
                 <option value="state">By state</option>
