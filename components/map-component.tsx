@@ -4,7 +4,8 @@ import { useEffect, useRef, useState } from "react"
 import type { Airport } from "@/lib/airport-data"
 import type { WeatherData } from "@/lib/weather"
 import { CATEGORY_STYLES } from "@/lib/weather"
-import { Star, X, Navigation } from "lucide-react"
+import { Star, X } from "lucide-react"
+import { NavigateDropdown } from "@/components/navigate-dropdown"
 
 interface MapComponentProps {
   airports: Airport[]
@@ -149,25 +150,21 @@ function PopupContent({
           )}
 
           <div className="mt-2 pt-2 border-t border-gray-100 flex items-center gap-3">
-            <a
-              href={`https://maps.google.com/maps?q=${airport.lat},${airport.lng}&z=15`}
-              target="_blank"
-              rel="noopener noreferrer"
-              onClick={(e) => e.stopPropagation()}
-              className="inline-flex items-center gap-1.5 px-3 py-1.5 bg-blue-600 text-white text-xs font-semibold rounded hover:bg-blue-700 transition-colors"
-            >
-              <Navigation className="w-3 h-3" />
-              Navigate
-            </a>
-            {placeData?.website && (
+            <NavigateDropdown
+              lat={airport.lat}
+              lng={airport.lng}
+              icao={airport.icao}
+              variant="popup"
+            />
+            {(placeData?.website ?? airport.restaurant.website) && (
               <a
-                href={placeData.website}
+                href={placeData?.website ?? airport.restaurant.website}
                 target="_blank"
                 rel="noopener noreferrer"
                 onClick={(e) => e.stopPropagation()}
                 className="text-xs text-blue-600 font-medium hover:underline"
               >
-                Visit website →
+                Website →
               </a>
             )}
           </div>

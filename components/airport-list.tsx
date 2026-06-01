@@ -5,6 +5,7 @@ import type { Airport } from "@/lib/airport-data"
 import type { WeatherData } from "@/lib/weather"
 import { CATEGORY_STYLES } from "@/lib/weather"
 import { MapPin, ExternalLink, Star, Fuel, Clock } from "lucide-react"
+import { NavigateDropdown } from "@/components/navigate-dropdown"
 
 interface AirportListProps {
   airports: Airport[]
@@ -87,15 +88,23 @@ export function AirportList({ airports, weatherMap, favorites, onToggleFavorite 
                   }`}
                 />
               </button>
-              <a
-                href={`https://maps.google.com/maps?q=${airport.lat},${airport.lng}&z=15`}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="inline-flex items-center gap-1.5 px-3 py-1.5 text-xs font-semibold bg-primary text-primary-foreground rounded hover:opacity-90 transition-opacity"
-              >
-                <ExternalLink className="w-3 h-3" />
-                Navigate
-              </a>
+              {airport.restaurant.website && (
+                <a
+                  href={airport.restaurant.website}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  title="Restaurant website"
+                  className="p-1.5 rounded hover:bg-muted transition-colors text-muted-foreground hover:text-foreground"
+                >
+                  <ExternalLink className="w-4 h-4" />
+                </a>
+              )}
+              <NavigateDropdown
+                lat={airport.lat}
+                lng={airport.lng}
+                icao={airport.icao}
+                variant="list"
+              />
             </div>
           </div>
         )
