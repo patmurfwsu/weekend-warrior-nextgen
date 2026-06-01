@@ -4,7 +4,7 @@ import Link from "next/link"
 import type { Airport } from "@/lib/airport-data"
 import type { WeatherData } from "@/lib/weather"
 import { CATEGORY_STYLES } from "@/lib/weather"
-import { MapPin, ExternalLink, Star, Fuel, Clock } from "lucide-react"
+import { MapPin, Star, Fuel, Clock } from "lucide-react"
 import { NavigateDropdown } from "@/components/navigate-dropdown"
 
 interface AirportListProps {
@@ -93,10 +93,9 @@ export function AirportList({ airports, weatherMap, favorites, onToggleFavorite 
                   href={airport.restaurant.website}
                   target="_blank"
                   rel="noopener noreferrer"
-                  title="Restaurant website"
-                  className="p-1.5 rounded hover:bg-muted transition-colors text-muted-foreground hover:text-foreground"
+                  className="text-xs font-medium text-primary hover:underline whitespace-nowrap"
                 >
-                  <ExternalLink className="w-4 h-4" />
+                  Website →
                 </a>
               )}
               <NavigateDropdown icao={airport.icao} variant="list" />

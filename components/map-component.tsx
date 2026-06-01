@@ -4,7 +4,7 @@ import { useEffect, useRef, useState } from "react"
 import type { Airport } from "@/lib/airport-data"
 import type { WeatherData } from "@/lib/weather"
 import { CATEGORY_STYLES } from "@/lib/weather"
-import { Star, X } from "lucide-react"
+import { Star, X, Plus, Minus, LocateFixed } from "lucide-react"
 import { NavigateDropdown } from "@/components/navigate-dropdown"
 
 interface MapComponentProps {
@@ -183,6 +183,7 @@ export function MapComponent({ airports, filteredIcaos, apiKey, weatherMap, favo
     position: { x: number; y: number } | null
   } | null>(null)
 
+  const [locating, setLocating] = useState(false)
   const placeCache = useRef<Map<string, PlaceData>>(new Map())
   const isOverPopupRef = useRef(false)
   const hideTimeoutRef = useRef<NodeJS.Timeout | null>(null)
@@ -286,7 +287,8 @@ export function MapComponent({ airports, filteredIcaos, apiKey, weatherMap, favo
       center: { lat: centerLat, lng: centerLng },
       mapTypeId: "satellite",
       mapTypeControl: false,
-      fullscreenControl: true,
+      zoomControl: false,
+      fullscreenControl: false,
       streetViewControl: false,
     })
     mapInstanceRef.current = map
@@ -400,9 +402,54 @@ export function MapComponent({ airports, filteredIcaos, apiKey, weatherMap, favo
 
   const isBottomSheet = hoverData?.position === null
 
+  const handleGoToLocation = () => {
+    if (!navigator.geolocation || !mapInstanceRef.current) return
+    setLocating(true)
+    navigator.geolocation.getCurrentPosition(
+      (pos) => {
+        mapInstanceRef.current.setCenter({ lat: pos.coords.latitude, lng: pos.coords.longitude })
+        mapInstanceRef.current.setZoom(10)
+        setLocating(false)
+      },
+      () => setLocating(false),
+    )
+  }
+
   return (
     <div className="relative w-full h-full">
       <div ref={mapRef} className="w-full h-full min-h-[calc(100vh-200px)]" />
+
+      {/* Custom map controls — zoom + locate */}
+      <div className="absolute bottom-6 right-3 z-10 flex flex-col gap-1">
+        <button
+          onClick={() => {
+            const m = mapInstanceRef.current
+            if (m) m.setZoom((m.getZoom() ?? 4) + 1)
+          }}
+          aria-label="Zoom in"
+          className="w-9 h-9 bg-white rounded shadow-md border border-gray-300 flex items-center justify-center hover:bg-gray-50 transition-colors text-gray-700"
+        >
+          <Plus className="w-4 h-4" />
+        </button>
+        <button
+          onClick={() => {
+            const m = mapInstanceRef.current
+            if (m) m.setZoom((m.getZoom() ?? 4) - 1)
+          }}
+          aria-label="Zoom out"
+          className="w-9 h-9 bg-white rounded shadow-md border border-gray-300 flex items-center justify-center hover:bg-gray-50 transition-colors text-gray-700"
+        >
+          <Minus className="w-4 h-4" />
+        </button>
+        <button
+          onClick={handleGoToLocation}
+          disabled={locating}
+          aria-label="Go to my location"
+          className="w-9 h-9 bg-white rounded shadow-md border border-gray-300 flex items-center justify-center hover:bg-gray-50 transition-colors mt-1 disabled:opacity-50"
+        >
+          <LocateFixed className={`w-4 h-4 text-blue-600 ${locating ? "animate-pulse" : ""}`} />
+        </button>
+      </div>
 
       {/* Desktop: floating hover popup */}
       {hoverData && !isBottomSheet && (

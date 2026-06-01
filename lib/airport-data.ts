@@ -266,6 +266,7 @@ export const airports: Airport[] = [
       name: "Flight Deck Restaurant & Lounge",
       description: "Three-sided windowed restaurant on the Salem ramp with Cascade Mountain views. Full menu from eggs Benedict to the Aviator Tenderloin — great for a weekend breakfast or post-flight dinner.",
       placeId: "ChIJfwpSZLr4v1QRg1phsQCPs3o",
+      website: "https://www.facebook.com/FlightDeckRestaurantSalemOR/",
     },
     lat: 44.9095,
     lng: -123.0029,
