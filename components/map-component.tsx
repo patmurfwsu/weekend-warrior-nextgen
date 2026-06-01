@@ -339,7 +339,7 @@ export function MapComponent({ airports, filteredIcaos, apiKey, weatherMap, favo
           const y = (pt.y - topRight.y) * scale
 
           const POPUP_W = 300
-          const POPUP_H = 380
+          const POPUP_H = 520  // generous max including photo + reviews + badges
           const cW = mapRef.current?.offsetWidth ?? 800
           const cH = mapRef.current?.offsetHeight ?? 600
 
@@ -407,8 +407,13 @@ export function MapComponent({ airports, filteredIcaos, apiKey, weatherMap, favo
       {/* Desktop: floating hover popup */}
       {hoverData && !isBottomSheet && (
         <div
-          className="absolute z-50 bg-white rounded-lg shadow-xl border border-gray-200 p-3"
-          style={{ left: hoverData.position!.x, top: hoverData.position!.y, maxWidth: 280 }}
+          className="absolute z-50 bg-white rounded-lg shadow-xl border border-gray-200 p-3 overflow-y-auto"
+          style={{
+            left: hoverData.position!.x,
+            top: hoverData.position!.y,
+            maxWidth: 280,
+            maxHeight: `calc(100% - ${hoverData.position!.y + 8}px)`,
+          }}
           onMouseEnter={() => {
             isOverPopupRef.current = true
             if (hideTimeoutRef.current) {
