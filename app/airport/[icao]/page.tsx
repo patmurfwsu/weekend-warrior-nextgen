@@ -1,9 +1,11 @@
 import { notFound } from "next/navigation"
 import type { Metadata } from "next"
 import Link from "next/link"
-import { Plane, Heart, ArrowLeft, Fuel, Clock, Mountain, MapPin, ExternalLink } from "lucide-react"
+import { ArrowLeft, Fuel, Clock, Mountain, MapPin, ExternalLink } from "lucide-react"
 import { airports } from "@/lib/airport-data"
 import { AirportWeather } from "@/components/airport-weather"
+import { SiteHeader } from "@/components/site-header"
+import { SiteFooter } from "@/components/site-footer"
 
 export function generateStaticParams() {
   return airports.map((a) => ({ icao: a.icao.toLowerCase() }))
@@ -40,29 +42,7 @@ export default async function AirportPage({
 
   return (
     <div className="min-h-screen bg-background">
-      <header className="bg-[oklch(0.14_0.07_260)] border-b border-white/10">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-5 flex items-center justify-between">
-          <Link href="/" className="flex items-center gap-2.5 hover:opacity-80 transition-opacity">
-            <Plane className="w-7 h-7 text-white" />
-            <span className="text-xl font-bold text-white tracking-tight">Weekend Warrior</span>
-          </Link>
-          <nav className="flex items-center gap-6">
-            <Link
-              href="/submit"
-              className="hidden sm:block text-sm font-medium text-white/70 hover:text-white transition-colors"
-            >
-              Submit Airport
-            </Link>
-            <Link
-              href="/donate"
-              className="flex items-center gap-1.5 text-sm font-medium text-white/70 hover:text-white transition-colors"
-            >
-              <Heart className="w-4 h-4" />
-              <span className="hidden sm:inline">Support</span>
-            </Link>
-          </nav>
-        </div>
-      </header>
+      <SiteHeader />
 
       <main className="max-w-2xl mx-auto px-4 sm:px-6 py-8 space-y-5">
         <Link
@@ -178,6 +158,7 @@ export default async function AirportPage({
           </div>
         </div>
       </main>
+      <SiteFooter />
     </div>
   )
 }

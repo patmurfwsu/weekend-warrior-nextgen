@@ -1,9 +1,10 @@
 "use client"
 
-import Link from "next/link"
-import { Plane, Heart, Coffee, Fuel, UtensilsCrossed } from "lucide-react"
+import { Heart, Coffee, Fuel, UtensilsCrossed } from "lucide-react"
 import { DONATION_TIERS } from "@/lib/products"
 import type React from "react"
+import { SiteHeader } from "@/components/site-header"
+import { SiteFooter } from "@/components/site-footer"
 
 const STRIPE_LINK = "https://buy.stripe.com/test_9B64gBgpj5f3fqVftx04801"
 
@@ -16,23 +17,7 @@ const ICONS: Record<string, React.ReactNode> = {
 export default function DonatePage() {
   return (
     <div className="min-h-screen flex flex-col bg-background">
-      {/* Header */}
-      <header className="bg-[oklch(0.14_0.07_260)] border-b border-white/10">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-5 flex items-center justify-between">
-          <Link href="/" className="flex items-center gap-2.5 hover:opacity-80 transition-opacity">
-            <Plane className="w-7 h-7 text-white" />
-            <span className="text-xl font-bold text-white tracking-tight">Weekend Warrior</span>
-          </Link>
-          <nav className="flex items-center gap-6">
-            <Link href="/map" className="text-sm font-medium text-white/70 hover:text-white transition-colors">
-              Explore Map
-            </Link>
-            <Link href="/submit" className="hidden sm:block text-sm font-medium text-white/70 hover:text-white transition-colors">
-              Submit Airport
-            </Link>
-          </nav>
-        </div>
-      </header>
+      <SiteHeader />
 
       <main className="flex-1 max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-12 w-full">
         <div className="space-y-8">
@@ -77,13 +62,7 @@ export default function DonatePage() {
         </div>
       </main>
 
-      <footer className="border-t border-border">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-          <p className="text-center text-sm text-muted-foreground">
-            Weekend Warrior • Find great airports worth flying to
-          </p>
-        </div>
-      </footer>
+      <SiteFooter />
     </div>
   )
 }

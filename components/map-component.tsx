@@ -293,6 +293,8 @@ export function MapComponent({ airports, filteredIcaos, apiKey, weatherMap, favo
       center: { lat: centerLat, lng: centerLng },
       mapTypeId: "satellite",
       disableDefaultUI: true,   // kills ALL native controls; we supply our own
+      gestureHandling: "greedy", // one-finger pan on touch devices, matching native flight-map behavior
+      draggable: true,
       mapId: process.env.NEXT_PUBLIC_GOOGLE_MAP_ID || "DEMO_MAP_ID",
     })
     mapInstanceRef.current = map
@@ -416,7 +418,7 @@ export function MapComponent({ airports, filteredIcaos, apiKey, weatherMap, favo
 
   return (
     <div className="relative w-full h-full">
-      <div ref={mapRef} className="w-full h-full min-h-[calc(100vh-200px)]" />
+      <div ref={mapRef} className="w-full h-full min-h-[calc(100vh-200px)] touch-none" />
 
       {/* Custom map controls — zoom + locate */}
       <div className="absolute bottom-6 right-3 z-10 flex flex-col gap-1">
