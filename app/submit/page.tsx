@@ -2,8 +2,10 @@
 
 import { useState } from "react"
 import Link from "next/link"
-import { Plane, ArrowLeft, CheckCircle, Send } from "lucide-react"
+import { Plane, CheckCircle, Send } from "lucide-react"
 import { submitAirport } from "@/app/actions/submit"
+import { SiteHeader } from "@/components/site-header"
+import { SiteFooter } from "@/components/site-footer"
 
 const US_STATES = [
   "AL","AK","AZ","AR","CA","CO","CT","DE","FL","GA","HI","ID","IL","IN","IA",
@@ -67,20 +69,7 @@ export default function SubmitPage() {
 
   return (
     <div className="min-h-screen flex flex-col bg-background">
-      {/* Header */}
-      <header className="border-b border-border bg-card">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4 sm:py-6 flex items-center justify-between">
-          <Link href="/map" className="flex items-center gap-2 hover:opacity-80 transition-opacity">
-            <ArrowLeft className="w-5 h-5 text-primary" />
-            <span className="text-sm font-semibold text-muted-foreground">Back to Map</span>
-          </Link>
-          <div className="flex items-center gap-2">
-            <Plane className="w-7 h-7 text-primary" />
-            <span className="text-xl font-bold text-primary">Weekend Warrior</span>
-          </div>
-          <div className="w-24" />
-        </div>
-      </header>
+      <SiteHeader />
 
       <main className="flex-1 max-w-2xl mx-auto w-full px-4 sm:px-6 py-12">
         {success ? (
@@ -266,11 +255,7 @@ export default function SubmitPage() {
         )}
       </main>
 
-      <footer className="border-t border-border bg-card">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
-          <p className="text-center text-sm text-muted-foreground">Weekend Warrior • Find great airports worth flying to</p>
-        </div>
-      </footer>
+      <SiteFooter />
     </div>
   )
 }
