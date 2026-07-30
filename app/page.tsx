@@ -1,211 +1,359 @@
 import Link from "next/link"
-import { Plane, Heart, MapPin, UtensilsCrossed, PlusCircle, Cloud, Utensils } from "lucide-react"
+import Image from "next/image"
+import { Heart, MapPin, UtensilsCrossed, PlusCircle, Plane } from "lucide-react"
 import { airports } from "@/lib/airport-data"
 import { NearbyAirports } from "@/components/nearby-airports"
 import { HeroSearch } from "@/components/hero-search"
+
+/* ── Targeting-corner bracket helper ──────────────────────── */
+function TargetCorners({ className = "" }: { className?: string }) {
+  const brass = "border-[oklch(0.67_0.13_72/0.55)]"
+  return (
+    <>
+      <div className={`absolute top-5 left-5 w-9 h-9 border-t-2 border-l-2 ${brass} ${className}`} />
+      <div className={`absolute top-5 right-5 w-9 h-9 border-t-2 border-r-2 ${brass} ${className}`} />
+      <div className={`absolute bottom-5 left-5 w-9 h-9 border-b-2 border-l-2 ${brass} ${className}`} />
+      <div className={`absolute bottom-5 right-5 w-9 h-9 border-b-2 border-r-2 ${brass} ${className}`} />
+    </>
+  )
+}
+
+/* ── Star divider ──────────────────────────────────────────── */
+function StarDivider({ stars = 3, light = false }: { stars?: number; light?: boolean }) {
+  const color = light ? "text-[oklch(0.67_0.13_72/0.45)]" : "text-[oklch(0.67_0.13_72/0.6)]"
+  const line  = light ? "bg-[oklch(0.67_0.13_72/0.2)]" : "bg-border/60"
+  return (
+    <div className="flex items-center gap-3 my-1">
+      <span className={`flex-1 h-px ${line}`} />
+      <span className={`${color} text-xs tracking-[0.3em]`}>{"★".repeat(stars)}</span>
+      <span className={`flex-1 h-px ${line}`} />
+    </div>
+  )
+}
 
 export default function HomePage() {
   return (
     <div className="min-h-screen bg-background">
 
-      {/* ── HERO ──────────────────────────────────────────────────── */}
-      <section className="relative h-[85vh] min-h-[560px] flex flex-col">
-        {/* Background */}
-        <div
-          className="absolute inset-0 bg-cover bg-center"
-          style={{ backgroundImage: "url(/runway-background.png)" }}
-        />
-        {/* Gradient overlay — darker at top for nav legibility, lighter mid-frame */}
-        <div className="absolute inset-0 bg-gradient-to-b from-black/60 via-black/35 to-black/60" />
+      {/* ════════════════════════════════════════════════════════
+          NAV — dark olive command bar
+          ════════════════════════════════════════════════════════ */}
+      <header className="bg-[oklch(0.13_0.05_118)] border-b border-[oklch(0.25_0.05_110)] sticky top-0 z-50">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-2.5 flex items-center justify-between">
+          {/* Logo — the actual trademark */}
+          <Link href="/" className="shrink-0 block">
+            <Image
+              src="/ww-logo.webp"
+              alt="Weekend Warrior"
+              width={1407}
+              height={768}
+              className="h-12 w-auto"
+              priority
+            />
+          </Link>
 
-        {/* ── Nav (floating over hero) ─────────────────────────── */}
-        <header className="relative z-20 w-full">
-          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-5 flex items-center justify-between">
-            <div className="flex items-center gap-2.5">
-              <Plane className="w-7 h-7 text-white" />
-              <span className="text-xl font-bold text-white tracking-tight">Weekend Warrior</span>
-            </div>
-            <nav className="flex items-center gap-6">
-              <Link href="/map" className="hidden sm:block text-sm font-medium text-white/80 hover:text-white transition-colors">
-                Explore
-              </Link>
-              <Link href="/submit" className="hidden sm:block text-sm font-medium text-white/80 hover:text-white transition-colors">
-                Submit Airport
-              </Link>
-              <Link
-                href="/donate"
-                className="flex items-center gap-1.5 text-sm font-medium text-white/80 hover:text-white transition-colors"
-              >
-                <Heart className="w-4 h-4" />
-                <span className="hidden sm:inline">Support</span>
-              </Link>
-            </nav>
+          {/* Nav links */}
+          <nav className="flex items-center gap-6">
+            <Link href="/map"    className="hidden sm:block mission-label text-[oklch(0.70_0.05_85/0.7)] hover:text-[oklch(0.67_0.13_72)] transition-colors">Explore</Link>
+            <Link href="/submit" className="hidden sm:block mission-label text-[oklch(0.70_0.05_85/0.7)] hover:text-[oklch(0.67_0.13_72)] transition-colors">Submit Airport</Link>
+            <Link href="/donate" className="flex items-center gap-1.5 mission-label text-[oklch(0.70_0.05_85/0.7)] hover:text-[oklch(0.67_0.13_72)] transition-colors">
+              <Heart className="w-3.5 h-3.5" />
+              <span className="hidden sm:inline">Support</span>
+            </Link>
+          </nav>
+        </div>
+      </header>
+
+      {/* ════════════════════════════════════════════════════════
+          HERO — mission briefing
+          ════════════════════════════════════════════════════════ */}
+      <section className="relative h-[88vh] min-h-[580px] flex flex-col overflow-hidden">
+        {/* Runway photo */}
+        <div className="absolute inset-0 bg-cover bg-center" style={{ backgroundImage: "url(/runway-background.png)" }} />
+        {/* Sepia-olive tint — desaturate & warm */}
+        <div className="absolute inset-0 bg-[oklch(0.16_0.07_78/0.78)]" />
+        {/* Vignette */}
+        <div className="absolute inset-0 bg-gradient-to-b from-black/55 via-black/20 to-black/75" />
+        {/* Scanline texture */}
+        <div className="absolute inset-0 opacity-[0.04]"
+          style={{ backgroundImage: "repeating-linear-gradient(0deg, transparent, transparent 3px, rgba(255,255,255,0.6) 3px, rgba(255,255,255,0.6) 4px)" }} />
+
+        {/* Targeting-corner brackets */}
+        <TargetCorners />
+
+        {/* Hero content */}
+        <div className="relative z-10 flex-1 flex flex-col items-center justify-center text-center px-4 sm:px-6 pt-2">
+
+          {/* Unit designation stamp */}
+          <div className="inline-flex items-center gap-3 mb-3">
+            <span className="h-px w-12 bg-[oklch(0.67_0.13_72/0.5)]" />
+            <p className="mission-label text-[oklch(0.67_0.13_72)] tracking-[0.35em]">
+              ✦ Classified · Mission Briefing ✦
+            </p>
+            <span className="h-px w-12 bg-[oklch(0.67_0.13_72/0.5)]" />
           </div>
-        </header>
 
-        {/* ── Hero content ─────────────────────────────────────── */}
-        <div className="relative z-10 flex-1 flex flex-col items-center justify-center text-center px-4 sm:px-6 -mt-8">
-          <h1 className="text-5xl sm:text-6xl lg:text-7xl font-bold text-white leading-[1.1] max-w-3xl drop-shadow-lg">
-            Find your next<br />
-            <span className="text-accent">$100 Hamburger</span>
+          {/* Stars / rank insignia */}
+          <div className="mb-4 text-[oklch(0.67_0.13_72/0.75)] tracking-[0.4em] text-base">★ ★ ★ ★ ★</div>
+
+          {/* Main headline */}
+          <h1 className="font-display font-bold uppercase leading-[0.92] tracking-tight drop-shadow-2xl">
+            <span className="block text-4xl sm:text-6xl lg:text-7xl text-white/90">Find Your Next</span>
+            <span
+              className="block text-6xl sm:text-8xl lg:text-[7rem] text-[oklch(0.67_0.13_72)]"
+              style={{ textShadow: "0 0 40px oklch(0.67 0.13 72 / 0.35), 0 2px 0 rgba(0,0,0,0.5)" }}
+            >
+              $100 Hamburger
+            </span>
           </h1>
-          <p className="mt-5 text-lg sm:text-xl text-white/75 max-w-lg drop-shadow">
-            The best on-airport restaurants across the US, found and loved by fellow GA pilots.
+
+          {/* Typewriter sub-copy */}
+          <p className="mt-5 text-sm sm:text-base font-stamp text-white/55 max-w-sm drop-shadow tracking-wide leading-relaxed">
+            The best on-airport restaurants across the U.S.<br />
+            Scouted and rated by fellow GA pilots.
           </p>
 
-          {/* Primary CTA */}
+          {/* Star divider */}
+          <div className="flex items-center gap-3 my-5 w-48 mx-auto">
+            <span className="flex-1 h-px bg-[oklch(0.67_0.13_72/0.3)]" />
+            <span className="text-[oklch(0.67_0.13_72/0.6)] text-[0.6rem] tracking-[0.4em]">★ ★ ★</span>
+            <span className="flex-1 h-px bg-[oklch(0.67_0.13_72/0.3)]" />
+          </div>
+
+          {/* CTA */}
           <Link
             href="/map"
-            className="mt-8 inline-flex items-center gap-2.5 px-8 py-3.5 bg-primary text-primary-foreground rounded-full font-semibold text-base hover:opacity-90 active:scale-95 transition-all shadow-lg"
+            className="inline-flex items-center gap-3 px-9 py-3.5
+              bg-[oklch(0.30_0.08_130)] text-[oklch(0.94_0.03_84)]
+              font-display font-bold text-sm uppercase tracking-[0.18em]
+              border border-[oklch(0.45_0.09_130)]
+              hover:bg-[oklch(0.26_0.07_130)] active:scale-95
+              transition-all shadow-2xl"
           >
-            <Plane className="w-5 h-5" />
-            Explore the Map
+            <Plane className="w-4 h-4" />
+            Scramble the Map
           </Link>
 
           {/* Hero search */}
           <HeroSearch />
 
-          {/* Secondary link — AllTrails-style underline link */}
-          <Link
-            href="/submit"
-            className="mt-4 text-sm text-white/70 hover:text-white underline underline-offset-4 transition-colors"
-          >
+          {/* Submit link */}
+          <Link href="/submit" className="mt-4 mission-label text-white/40 hover:text-white/65 underline underline-offset-4 transition-colors">
             Know a spot? Submit an airport →
           </Link>
         </div>
+
+        {/* Bottom brass tape */}
+        <div className="absolute bottom-0 left-0 right-0 h-[2px] bg-gradient-to-r from-transparent via-[oklch(0.67_0.13_72/0.6)] to-transparent" />
       </section>
 
-      {/* ── AIRPORTS NEAR YOU ─────────────────────────────────────── */}
+      {/* ════════════════════════════════════════════════════════
+          AIRPORTS NEAR YOU
+          ════════════════════════════════════════════════════════ */}
       <NearbyAirports airports={airports} />
 
-      {/* ── HOW IT WORKS ──────────────────────────────────────────── */}
-      <section className="bg-muted/40 py-14 sm:py-20 px-4 sm:px-6 lg:px-8 border-t border-border">
+      {/* ════════════════════════════════════════════════════════
+          FIELD ORDERS — how it works
+          ════════════════════════════════════════════════════════ */}
+      <section className="texture-paper tactical-grid bg-muted/40 py-16 sm:py-24 px-4 sm:px-6 lg:px-8 border-t-2 border-b-2 border-border relative overflow-hidden">
+        {/* Top olive tape */}
+        <div className="absolute top-0 left-0 right-0 h-1.5 bg-[oklch(0.30_0.08_130/0.35)]" />
+        <div className="absolute bottom-0 left-0 right-0 h-1.5 bg-[oklch(0.30_0.08_130/0.35)]" />
+
         <div className="max-w-5xl mx-auto">
           {/* Section header */}
-          <div className="mb-10 sm:mb-12">
-            <p className="text-xs font-semibold uppercase tracking-widest text-primary mb-2">What is this?</p>
-            <h2 className="text-2xl sm:text-3xl font-bold text-foreground mb-3">
-              Your $100 hamburger, planned in minutes
+          <div className="mb-14">
+            <div className="flex items-center gap-3 mb-3">
+              <span className="h-px flex-1 max-w-[3rem] bg-border/60" />
+              <p className="mission-label text-primary tracking-[0.3em]">◈ Field Orders ◈</p>
+              <span className="h-px flex-1 max-w-[3rem] bg-border/60" />
+            </div>
+            <h2 className="font-display font-bold text-foreground uppercase text-3xl sm:text-4xl tracking-tight leading-none mb-4">
+              Your Mission: $100 Hamburger
             </h2>
-            <p className="text-muted-foreground max-w-2xl leading-relaxed">
-              The <span className="text-foreground font-medium">"$100 hamburger"</span> is a beloved GA tradition —
+            <StarDivider />
+            <p className="font-stamp text-muted-foreground max-w-2xl leading-relaxed mt-4 text-[0.92rem]">
+              The <span className="text-foreground font-medium">&ldquo;$100 hamburger&rdquo;</span> is a beloved GA tradition —
               named for the irony that a short local flight burns enough fuel to cost roughly $100 for a $12 burger.
-              Weekend Warrior maps every on-airport restaurant we've found so you can turn a Saturday morning into a
+              Weekend Warrior maps every on-airport restaurant we&apos;ve found so you can turn a Saturday morning into a
               proper fly-out with almost no planning.
             </p>
           </div>
 
-          {/* 3-step how it works */}
-          <div className="grid sm:grid-cols-3 gap-6 sm:gap-8">
-            <div className="flex gap-4">
-              <div className="shrink-0 w-10 h-10 rounded-full bg-primary/10 flex items-center justify-center">
-                <MapPin className="w-5 h-5 text-primary" />
-              </div>
-              <div>
-                <p className="text-xs font-semibold text-muted-foreground uppercase tracking-wide mb-1">Step 01</p>
-                <h3 className="font-semibold text-foreground mb-1">Pick a destination</h3>
-                <p className="text-sm text-muted-foreground leading-relaxed">
-                  Browse the map or search by airport code, name, or state. Tap any marker for restaurant photos,
-                  ratings, and reviews.
-                </p>
-              </div>
+          {/* 3 orders */}
+          <div className="grid sm:grid-cols-3 gap-8 sm:gap-10">
+            {/* Order 01 */}
+            <div className="relative pl-5 border-l-2 border-primary/30">
+              <p className="mission-label text-[oklch(0.67_0.13_72)] mb-2 tracking-[0.25em]">Order — 01</p>
+              <h3 className="font-display font-bold text-foreground uppercase tracking-wide text-lg leading-tight mb-2">
+                Pick a Destination
+              </h3>
+              <div className="w-6 h-0.5 bg-primary/40 mb-3" />
+              <p className="font-stamp text-sm text-muted-foreground leading-relaxed">
+                Browse the map or search by airport code, name, or state. Tap any marker for restaurant photos,
+                ratings, and reviews.
+              </p>
+              <div className="absolute -left-[5px] top-0 w-2 h-2 rounded-full bg-primary/50" />
             </div>
 
-            <div className="flex gap-4">
-              <div className="shrink-0 w-10 h-10 rounded-full bg-primary/10 flex items-center justify-center">
-                <Cloud className="w-5 h-5 text-primary" />
-              </div>
-              <div>
-                <p className="text-xs font-semibold text-muted-foreground uppercase tracking-wide mb-1">Step 02</p>
-                <h3 className="font-semibold text-foreground mb-1">Check the weather</h3>
-                <p className="text-sm text-muted-foreground leading-relaxed">
-                  Live METARs update every 10 minutes. Marker colors tell you at a glance — green is VFR, red is IFR.
-                  Plan your fuel stop around the food.
-                </p>
-              </div>
+            {/* Order 02 */}
+            <div className="relative pl-5 border-l-2 border-primary/30">
+              <p className="mission-label text-[oklch(0.67_0.13_72)] mb-2 tracking-[0.25em]">Order — 02</p>
+              <h3 className="font-display font-bold text-foreground uppercase tracking-wide text-lg leading-tight mb-2">
+                Check the Weather
+              </h3>
+              <div className="w-6 h-0.5 bg-primary/40 mb-3" />
+              <p className="font-stamp text-sm text-muted-foreground leading-relaxed">
+                Live METARs update every 10 minutes. Marker colors tell you at a glance — green is VFR, red is IFR.
+                Plan your fuel stop around the food.
+              </p>
+              <div className="absolute -left-[5px] top-0 w-2 h-2 rounded-full bg-primary/50" />
             </div>
 
-            <div className="flex gap-4">
-              <div className="shrink-0 w-10 h-10 rounded-full bg-primary/10 flex items-center justify-center">
-                <Utensils className="w-5 h-5 text-primary" />
-              </div>
-              <div>
-                <p className="text-xs font-semibold text-muted-foreground uppercase tracking-wide mb-1">Step 03</p>
-                <h3 className="font-semibold text-foreground mb-1">Land &amp; eat</h3>
-                <p className="text-sm text-muted-foreground leading-relaxed">
-                  Taxi to the ramp, walk in, and order. You've earned your $100 hamburger. Save favorites to build your
-                  own fly-out bucket list.
-                </p>
-              </div>
+            {/* Order 03 */}
+            <div className="relative pl-5 border-l-2 border-primary/30">
+              <p className="mission-label text-[oklch(0.67_0.13_72)] mb-2 tracking-[0.25em]">Order — 03</p>
+              <h3 className="font-display font-bold text-foreground uppercase tracking-wide text-lg leading-tight mb-2">
+                Land &amp; Eat
+              </h3>
+              <div className="w-6 h-0.5 bg-primary/40 mb-3" />
+              <p className="font-stamp text-sm text-muted-foreground leading-relaxed">
+                Taxi to the ramp, walk in, and order. You&apos;ve earned your $100 hamburger. Save favorites to build your
+                own fly-out bucket list.
+              </p>
+              <div className="absolute -left-[5px] top-0 w-2 h-2 rounded-full bg-primary/50" />
             </div>
           </div>
         </div>
       </section>
 
-      {/* ── BELOW-FOLD CONTENT ────────────────────────────────────── */}
-      <section className="bg-background py-14 sm:py-20 px-4 sm:px-6 lg:px-8">
-        <div className="max-w-5xl mx-auto space-y-14 sm:space-y-20">
+      {/* ════════════════════════════════════════════════════════
+          INTELLIGENCE REPORT — feature cards
+          ════════════════════════════════════════════════════════ */}
+      <section className="tactical-grid-dark bg-[oklch(0.18_0.06_118)] py-16 sm:py-24 px-4 sm:px-6 lg:px-8 border-b border-[oklch(0.25_0.05_110)]">
+        <div className="max-w-5xl mx-auto space-y-12">
+          {/* Section header */}
+          <div className="text-center">
+            <p className="mission-label text-[oklch(0.67_0.13_72/0.8)] mb-3 tracking-[0.3em]">
+              ◈ Intelligence Report ◈
+            </p>
+            <h2 className="font-display font-bold text-[oklch(0.88_0.03_85)] uppercase text-3xl sm:text-4xl tracking-tight mb-2">
+              Your Complete Tactical Kit
+            </h2>
+            <StarDivider light />
+          </div>
 
           {/* Feature cards */}
           <div className="grid sm:grid-cols-3 gap-6">
-            <div className="group rounded-xl border border-border bg-card p-6 hover:border-primary/40 hover:shadow-md transition-all">
-              <div className="w-10 h-10 rounded-lg bg-primary/10 flex items-center justify-center mb-4">
-                <MapPin className="w-5 h-5 text-primary" />
+            {/* Card 1 */}
+            <div className="riveted relative bg-[oklch(0.92_0.04_85)] border border-[oklch(0.68_0.05_78)] p-7 pt-9 group hover:border-[oklch(0.67_0.13_72/0.7)] hover:shadow-[0_0_20px_oklch(0.67_0.13_72/0.12)] transition-all">
+              {/* Unit badge */}
+              <div className="absolute -top-4 left-1/2 -translate-x-1/2 w-8 h-8 rounded-full border-2 border-[oklch(0.30_0.08_130)] bg-[oklch(0.92_0.04_85)] flex items-center justify-center">
+                <MapPin className="w-4 h-4 text-primary" />
               </div>
-              <h3 className="font-semibold text-foreground mb-2">Find Airports</h3>
-              <p className="text-sm text-muted-foreground leading-relaxed">
+              <p className="mission-label text-primary mb-2 tracking-[0.2em]">Nav · 01</p>
+              <h3 className="font-display font-bold text-foreground uppercase tracking-wide text-base mb-3">
+                Find Airports
+              </h3>
+              <div className="w-8 h-0.5 bg-accent/40 mb-3" />
+              <p className="font-stamp text-sm text-muted-foreground leading-relaxed">
                 Search by name, ICAO code, or state. Filter the map or browse a list — your choice.
               </p>
             </div>
-            <div className="group rounded-xl border border-border bg-card p-6 hover:border-primary/40 hover:shadow-md transition-all">
-              <div className="w-10 h-10 rounded-lg bg-accent/10 flex items-center justify-center mb-4">
-                <UtensilsCrossed className="w-5 h-5 text-accent" />
+
+            {/* Card 2 */}
+            <div className="riveted relative bg-[oklch(0.92_0.04_85)] border border-[oklch(0.68_0.05_78)] p-7 pt-9 group hover:border-[oklch(0.67_0.13_72/0.7)] hover:shadow-[0_0_20px_oklch(0.67_0.13_72/0.12)] transition-all">
+              <div className="absolute -top-4 left-1/2 -translate-x-1/2 w-8 h-8 rounded-full border-2 border-[oklch(0.67_0.13_72)] bg-[oklch(0.92_0.04_85)] flex items-center justify-center">
+                <UtensilsCrossed className="w-4 h-4 text-accent" />
               </div>
-              <h3 className="font-semibold text-foreground mb-2">Discover Restaurants</h3>
-              <p className="text-sm text-muted-foreground leading-relaxed">
-                See real photos, ratings, and reviews pulled live from Google Maps on every marker.
+              <p className="mission-label text-[oklch(0.67_0.13_72)] mb-2 tracking-[0.2em]">Intel · 02</p>
+              <h3 className="font-display font-bold text-foreground uppercase tracking-wide text-base mb-3">
+                Discover Restaurants
+              </h3>
+              <div className="w-8 h-0.5 bg-accent/40 mb-3" />
+              <p className="font-stamp text-sm text-muted-foreground leading-relaxed">
+                Real photos, ratings, and reviews pulled live from Google Maps on every marker.
               </p>
             </div>
-            <div className="group rounded-xl border border-border bg-card p-6 hover:border-primary/40 hover:shadow-md transition-all">
-              <div className="w-10 h-10 rounded-lg bg-primary/10 flex items-center justify-center mb-4">
-                <PlusCircle className="w-5 h-5 text-primary" />
+
+            {/* Card 3 */}
+            <div className="riveted relative bg-[oklch(0.92_0.04_85)] border border-[oklch(0.68_0.05_78)] p-7 pt-9 group hover:border-[oklch(0.67_0.13_72/0.7)] hover:shadow-[0_0_20px_oklch(0.67_0.13_72/0.12)] transition-all">
+              <div className="absolute -top-4 left-1/2 -translate-x-1/2 w-8 h-8 rounded-full border-2 border-[oklch(0.30_0.08_130)] bg-[oklch(0.92_0.04_85)] flex items-center justify-center">
+                <PlusCircle className="w-4 h-4 text-primary" />
               </div>
-              <h3 className="font-semibold text-foreground mb-2">Share Your Find</h3>
-              <p className="text-sm text-muted-foreground leading-relaxed">
-                Know a hidden gem that's not on the map yet? Submit it and help the community grow.
+              <p className="mission-label text-primary mb-2 tracking-[0.2em]">Recon · 03</p>
+              <h3 className="font-display font-bold text-foreground uppercase tracking-wide text-base mb-3">
+                Share Your Find
+              </h3>
+              <div className="w-8 h-0.5 bg-accent/40 mb-3" />
+              <p className="font-stamp text-sm text-muted-foreground leading-relaxed">
+                Know a hidden gem not on the map? Submit it and help the community grow.
               </p>
             </div>
           </div>
+        </div>
+      </section>
 
-          {/* Bottom CTA strip */}
-          <div className="rounded-xl bg-primary/5 border border-primary/15 px-8 py-10 text-center">
-            <h2 className="text-2xl font-bold text-foreground">Ready to fly somewhere new?</h2>
-            <p className="text-muted-foreground mt-2 mb-6">
+      {/* ════════════════════════════════════════════════════════
+          MISSION APPROVED — CTA
+          ════════════════════════════════════════════════════════ */}
+      <section className="texture-paper bg-background py-16 sm:py-24 px-4 sm:px-6 lg:px-8">
+        <div className="max-w-4xl mx-auto">
+          <div className="riveted-full relative border-2 border-primary/25 bg-primary/5 px-8 py-14 text-center overflow-hidden">
+            {/* Corner accent lines */}
+            <span className="absolute top-5 left-14 right-14 h-px bg-primary/15" />
+            <span className="absolute bottom-5 left-14 right-14 h-px bg-primary/15" />
+
+            {/* Large decorative stars */}
+            <div className="text-[oklch(0.67_0.13_72/0.2)] text-4xl mb-4 tracking-[0.5em]">★ ★ ★</div>
+
+            {/* Status stamp */}
+            <div className="inline-block mb-4">
+              <p className="mission-label text-primary tracking-[0.3em]">
+                ◈ Mission Status: Approved ◈
+              </p>
+            </div>
+
+            <h2 className="font-display font-bold text-foreground uppercase text-3xl sm:text-4xl tracking-tight mb-3">
+              Ready to Fly Somewhere New?
+            </h2>
+
+            <StarDivider />
+
+            <p className="font-stamp text-muted-foreground mt-3 mb-8 text-base">
               {airports.length} airports across the country — and growing.
             </p>
+
             <Link
               href="/map"
-              className="inline-flex items-center gap-2 px-7 py-3 bg-primary text-primary-foreground rounded-full font-semibold hover:opacity-90 transition-opacity"
+              className="inline-flex items-center gap-3 px-10 py-3.5
+                bg-[oklch(0.30_0.08_130)] text-[oklch(0.94_0.03_84)]
+                font-display font-bold text-sm uppercase tracking-[0.18em]
+                border border-[oklch(0.45_0.09_130)]
+                hover:bg-[oklch(0.26_0.07_130)] active:scale-95
+                transition-all shadow-lg"
             >
               <Plane className="w-4 h-4" />
               Open the Map
             </Link>
           </div>
-
         </div>
       </section>
 
-      {/* ── FOOTER ────────────────────────────────────────────────── */}
-      <footer className="border-t border-border">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 flex flex-col sm:flex-row items-center justify-between gap-3">
-          <div className="flex items-center gap-2 text-muted-foreground">
-            <Plane className="w-4 h-4" />
-            <span className="text-sm font-medium">Weekend Warrior</span>
-          </div>
-          <div className="flex items-center gap-6 text-sm text-muted-foreground">
-            <Link href="/map" className="hover:text-foreground transition-colors">Explore</Link>
-            <Link href="/submit" className="hover:text-foreground transition-colors">Submit Airport</Link>
-            <Link href="/donate" className="hover:text-foreground transition-colors">Support Us</Link>
+      {/* ════════════════════════════════════════════════════════
+          FOOTER
+          ════════════════════════════════════════════════════════ */}
+      <footer className="bg-[oklch(0.13_0.05_118)] border-t border-[oklch(0.25_0.05_110)]">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6 flex flex-col sm:flex-row items-center justify-between gap-4">
+          {/* Footer logo */}
+          <Link href="/" className="shrink-0">
+            <Image src="/ww-logo.webp" alt="Weekend Warrior" width={1407} height={768} className="h-8 w-auto opacity-70 hover:opacity-90 transition-opacity" />
+          </Link>
+
+          <div className="flex items-center gap-6">
+            <Link href="/map"    className="mission-label text-[oklch(0.60_0.04_85/0.45)] hover:text-[oklch(0.67_0.13_72/0.8)] transition-colors">Explore</Link>
+            <Link href="/submit" className="mission-label text-[oklch(0.60_0.04_85/0.45)] hover:text-[oklch(0.67_0.13_72/0.8)] transition-colors">Submit Airport</Link>
+            <Link href="/donate" className="mission-label text-[oklch(0.60_0.04_85/0.45)] hover:text-[oklch(0.67_0.13_72/0.8)] transition-colors">Support Us</Link>
           </div>
         </div>
       </footer>

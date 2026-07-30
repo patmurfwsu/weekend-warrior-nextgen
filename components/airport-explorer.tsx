@@ -3,7 +3,8 @@
 import { useState, useMemo, useEffect } from "react"
 import { Map, List, Search, Star, X, SlidersHorizontal, RefreshCw } from "lucide-react"
 import type { Airport } from "@/lib/airport-data"
-import type { WeatherData } from "@/lib/weather"
+import type { WeatherData, WeatherResponse } from "@/lib/weather"
+import { isWeatherStale } from "@/lib/weather"
 import { MapComponent } from "@/components/map-component"
 import { AirportList } from "@/components/airport-list"
 import { useFavorites } from "@/hooks/use-favorites"
@@ -36,21 +37,30 @@ export function AirportExplorer({ airports, apiKey, initialQuery = "" }: Airport
   const [sortOrder, setSortOrder] = useState<SortOrder>("name-asc")
   const [weatherMap, setWeatherMap] = useState<Record<string, WeatherData>>({})
   const [weatherLoading, setWeatherLoading] = useState(false)
+  const [weatherError, setWeatherError] = useState<string | null>(null)
   const [refreshKey, setRefreshKey] = useState(0)
 
   const { favorites, toggle: toggleFavorite } = useFavorites()
 
   useEffect(() => {
     setWeatherLoading(true)
+    setWeatherError(null)
     const ids = airports.map((a) => a.icao).join(",")
     fetch(`/api/weather?ids=${ids}`)
-      .then((r) => r.json())
+      .then(async (r) => {
+        const data = (await r.json()) as WeatherResponse
+        if (!r.ok) throw new Error(data.error || "Weather unavailable")
+        return data.weather
+      })
       .then((data: WeatherData[]) => {
         const map: Record<string, WeatherData> = {}
         data.forEach((w) => { map[w.icao] = w })
         setWeatherMap(map)
       })
-      .catch(() => {})
+      .catch((err: unknown) => {
+        setWeatherMap({})
+        setWeatherError(err instanceof Error ? err.message : "Weather unavailable")
+      })
       .finally(() => setWeatherLoading(false))
   }, [airports, refreshKey])
 
@@ -66,7 +76,8 @@ export function AirportExplorer({ airports, apiKey, initialQuery = "" }: Airport
         a.restaurant.name.toLowerCase().includes(q)
       const matchesState = !stateFilter || a.state === stateFilter
       const matchesFavorites = !showFavoritesOnly || favorites.has(a.icao)
-      const matchesVfr = !showVfrOnly || weatherMap[a.icao]?.category === "VFR"
+      const weather = weatherMap[a.icao]
+      const matchesVfr = !showVfrOnly || (weather?.category === "VFR" && !isWeatherStale(weather))
       return matchesQuery && matchesState && matchesFavorites && matchesVfr
     })
   }, [airports, query, stateFilter, showFavoritesOnly, showVfrOnly, favorites, weatherMap])
@@ -77,8 +88,10 @@ export function AirportExplorer({ airports, apiKey, initialQuery = "" }: Airport
       sorted.sort((a, b) => a.state.localeCompare(b.state) || a.name.localeCompare(b.name))
     } else if (sortOrder === "vfr-first") {
       sorted.sort((a, b) => {
-        const pa = VFR_PRIORITY[weatherMap[a.icao]?.category ?? ""] ?? 4
-        const pb = VFR_PRIORITY[weatherMap[b.icao]?.category ?? ""] ?? 4
+        const aWeather = weatherMap[a.icao]
+        const bWeather = weatherMap[b.icao]
+        const pa = aWeather && !isWeatherStale(aWeather) ? VFR_PRIORITY[aWeather.category ?? ""] ?? 4 : 4
+        const pb = bWeather && !isWeatherStale(bWeather) ? VFR_PRIORITY[bWeather.category ?? ""] ?? 4 : 4
         return pa - pb || a.name.localeCompare(b.name)
       })
     } else {
@@ -239,6 +252,12 @@ export function AirportExplorer({ airports, apiKey, initialQuery = "" }: Airport
             </button>
           </div>
         </div>
+
+        {weatherError && (
+          <div role="status" className="border-t border-red-200 bg-red-50 px-4 py-2 text-xs text-red-800">
+            {weatherError}. Weather filters are disabled; verify conditions with an official briefing source.
+          </div>
+        )}
 
         {/* Mobile filter drawer */}
         {showFilters && (

@@ -5,6 +5,19 @@ export interface WeatherData {
   windSpeed: number | null
   visibility: number | null
   tempC: number | null
+  observedAt: string | null
+  rawMetar: string | null
+}
+
+export interface WeatherResponse {
+  weather: WeatherData[]
+  error?: string
+}
+
+export function isWeatherStale(weather: WeatherData, maxAgeMinutes = 120) {
+  if (!weather.observedAt) return true
+  const observedAt = new Date(weather.observedAt).getTime()
+  return !Number.isFinite(observedAt) || Date.now() - observedAt > maxAgeMinutes * 60_000
 }
 
 export const CATEGORY_STYLES: Record<string, { badge: string; hex: string; textHex: string; markerHex: string }> = {
