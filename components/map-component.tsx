@@ -3,7 +3,7 @@
 import { useEffect, useRef, useState } from "react"
 import type { Airport } from "@/lib/airport-data"
 import type { WeatherData } from "@/lib/weather"
-import { CATEGORY_STYLES } from "@/lib/weather"
+import { CATEGORY_STYLES, isWeatherStale } from "@/lib/weather"
 import { Star, X, Plus, Minus, LocateFixed } from "lucide-react"
 import { NavigateDropdown } from "@/components/navigate-dropdown"
 
@@ -26,26 +26,27 @@ interface PlaceData {
     rating: number
     text: string
     relativeTime: string
+    authorUri: string | null
   }>
 }
 
 declare global {
   interface Window {
     google: any
+    initWeekendWarriorMap?: () => void
   }
 }
 
-function makeMarkerIcon(icao: string, fillColor: string) {
-  const svg = `<svg xmlns="http://www.w3.org/2000/svg" width="44" height="54">
+function makeMarkerContent(icao: string, fillColor: string) {
+  const wrapper = document.createElement("div")
+  wrapper.innerHTML = `<svg xmlns="http://www.w3.org/2000/svg" width="44" height="54" aria-hidden="true">
     <circle cx="22" cy="18" r="15" fill="${fillColor}" stroke="white" stroke-width="2.5"/>
     <text x="22" y="24" text-anchor="middle" font-size="15" fill="white" font-family="sans-serif">✈</text>
     <text x="22" y="42" text-anchor="middle" font-size="9" font-weight="bold"
       font-family="monospace,sans-serif" fill="white"
       stroke="#111" stroke-width="2.5" paint-order="stroke">${icao}</text>
   </svg>`
-  return {
-    url: "data:image/svg+xml;charset=UTF-8," + encodeURIComponent(svg),
-  }
+  return wrapper.firstElementChild as SVGElement
 }
 
 // Popup content — defined at module scope to avoid React remount on each render
@@ -65,7 +66,7 @@ function PopupContent({
   onToggleFavorite: (icao: string) => void
 }) {
   const wx = weatherMap[airport.icao]
-  const wxStyle = wx?.category ? CATEGORY_STYLES[wx.category] : null
+  const wxStyle = wx?.category && !isWeatherStale(wx) ? CATEGORY_STYLES[wx.category] : null
 
   return (
     <>
@@ -102,6 +103,9 @@ function PopupContent({
           )}
         </div>
       )}
+      {wx && isWeatherStale(wx) && (
+        <div className="mb-2 rounded-md bg-amber-50 px-2 py-1.5 text-xs font-medium text-amber-900">Stale METAR</div>
+      )}
 
       {/* Place details */}
       {loading ? (
@@ -111,6 +115,8 @@ function PopupContent({
       ) : (
         <>
           {placeData?.photoUrl && (
+            // Google Place photo URLs are dynamic and cannot use a stable Next.js image loader.
+            // eslint-disable-next-line @next/next/no-img-element
             <img
               src={placeData.photoUrl}
               alt={airport.restaurant.name}
@@ -136,7 +142,13 @@ function PopupContent({
               {placeData.reviews.map((review, idx) => (
                 <div key={idx} className="border-t border-gray-100 pt-2">
                   <div className="flex items-center gap-1 mb-0.5">
-                    <span className="text-xs font-medium text-gray-700">{review.authorName}</span>
+                    {review.authorUri ? (
+                      <a href={review.authorUri} target="_blank" rel="noopener noreferrer" className="text-xs font-medium text-blue-700 hover:underline">
+                        {review.authorName}
+                      </a>
+                    ) : (
+                      <span className="text-xs font-medium text-gray-700">{review.authorName}</span>
+                    )}
                     <span className="text-xs text-yellow-500">{"★".repeat(review.rating)}</span>
                   </div>
                   <p className="text-xs text-gray-600 leading-tight">{review.text}</p>
@@ -173,7 +185,6 @@ export function MapComponent({ airports, filteredIcaos, apiKey, weatherMap, favo
   const mapRef = useRef<HTMLDivElement>(null)
   const mapInstanceRef = useRef<any>(null)
   const markersMapRef = useRef<Map<string, any>>(new Map())
-  const placesServiceRef = useRef<any>(null)
 
   // position: {x,y} = desktop floating popup; position: null = mobile bottom sheet
   const [hoverData, setHoverData] = useState<{
@@ -195,12 +206,7 @@ export function MapComponent({ airports, filteredIcaos, apiKey, weatherMap, favo
   useEffect(() => { weatherMapRef.current = weatherMap }, [weatherMap])
 
   useEffect(() => {
-    fetchPlaceDetailsRef.current = (placeId: string, airportIcao: string) => {
-      if (!placesServiceRef.current) {
-        setHoverData((prev) => (prev ? { ...prev, loading: false } : null))
-        return
-      }
-
+    fetchPlaceDetailsRef.current = async (placeId: string, airportIcao: string) => {
       const cached = placeCache.current.get(placeId)
       if (cached) {
         setHoverData((prev) =>
@@ -209,42 +215,40 @@ export function MapComponent({ airports, filteredIcaos, apiKey, weatherMap, favo
         return
       }
 
-      placesServiceRef.current.getDetails(
-        { placeId, fields: ["photos", "rating", "user_ratings_total", "reviews", "website"] },
-        (place: any, status: any) => {
-          if (status === window.google.maps.places.PlacesServiceStatus.OK && place) {
-            const placeData: PlaceData = {
-              photoUrl: place.photos?.[0]?.getUrl({ maxWidth: 400, maxHeight: 250 }) ?? null,
-              rating: place.rating ?? null,
-              totalRatings: place.user_ratings_total ?? null,
-              website: place.website ?? null,
-              reviews: (place.reviews ?? []).slice(0, 2).map((r: any) => ({
-                authorName: r.author_name,
-                rating: r.rating,
-                text: r.text.length > 120 ? r.text.slice(0, 120) + "…" : r.text,
-                relativeTime: r.relative_time_description,
-              })),
+      try {
+        const { Place } = await window.google.maps.importLibrary("places")
+        const place = new Place({ id: placeId })
+        await place.fetchFields({ fields: ["photos", "rating", "userRatingCount", "reviews", "websiteURI"] })
+        const placeData: PlaceData = {
+          photoUrl: place.photos?.[0]?.getURI({ maxWidth: 400, maxHeight: 250 }) ?? null,
+          rating: place.rating ?? null,
+          totalRatings: place.userRatingCount ?? null,
+          website: place.websiteURI ?? null,
+          reviews: (place.reviews ?? []).slice(0, 2).map((review: any) => {
+            const text = review.text ?? ""
+            return {
+              authorName: review.authorAttribution?.displayName ?? "Google user",
+              authorUri: review.authorAttribution?.uri ?? null,
+              rating: review.rating ?? 0,
+              text: text.length > 120 ? text.slice(0, 120) + "…" : text,
+              relativeTime: review.relativePublishTimeDescription ?? "",
             }
-            placeCache.current.set(placeId, placeData)
-            setHoverData((prev) =>
-              prev?.airport.icao === airportIcao ? { ...prev, placeData, loading: false } : prev,
-            )
-          } else {
-            setHoverData((prev) =>
-              prev?.airport.icao === airportIcao
-                ? { ...prev, placeData: { photoUrl: null, rating: null, totalRatings: null, website: null, reviews: [] }, loading: false }
-                : prev,
-            )
-          }
-        },
-      )
+          }),
+        }
+        placeCache.current.set(placeId, placeData)
+        setHoverData((prev) => prev?.airport.icao === airportIcao ? { ...prev, placeData, loading: false } : prev)
+      } catch {
+        setHoverData((prev) => prev?.airport.icao === airportIcao
+          ? { ...prev, placeData: { photoUrl: null, rating: null, totalRatings: null, website: null, reviews: [] }, loading: false }
+          : prev)
+      }
     }
   })
 
   // Show/hide markers when filter changes
   useEffect(() => {
     markersMapRef.current.forEach((marker, icao) => {
-      marker.setVisible(filteredIcaos.has(icao))
+      marker.map = filteredIcaos.has(icao) ? mapInstanceRef.current : null
     })
   }, [filteredIcaos])
 
@@ -253,58 +257,56 @@ export function MapComponent({ airports, filteredIcaos, apiKey, weatherMap, favo
     if (!window.google?.maps) return
     markersMapRef.current.forEach((marker, icao) => {
       const wx = weatherMap[icao]
-      const color = wx?.category ? CATEGORY_STYLES[wx.category].markerHex : "#6b7280"
-      marker.setIcon({
-        ...makeMarkerIcon(icao, color),
-        scaledSize: new window.google.maps.Size(44, 54),
-        anchor: new window.google.maps.Point(22, 18),
-      })
+      const color = wx?.category && !isWeatherStale(wx) ? CATEGORY_STYLES[wx.category].markerHex : "#6b7280"
+      marker.replaceChildren(makeMarkerContent(icao, color))
     })
   }, [weatherMap])
 
   // Load Google Maps script once
   useEffect(() => {
     if (!apiKey) return
-    if (window.google?.maps) {
-      initializeMap()
+    if (typeof window.google?.maps?.importLibrary === "function") {
+      void initializeMap()
       return
     }
+    window.initWeekendWarriorMap = () => { void initializeMap() }
+    if (document.getElementById("weekend-warrior-google-maps")) return
     const script = document.createElement("script")
-    script.src = `https://maps.googleapis.com/maps/api/js?key=${apiKey}&libraries=places`
+    script.id = "weekend-warrior-google-maps"
+    script.src = `https://maps.googleapis.com/maps/api/js?key=${apiKey}&libraries=marker,places&v=weekly&loading=async&callback=initWeekendWarriorMap`
     script.async = true
-    script.onload = initializeMap
     document.body.appendChild(script)
   }, [apiKey]) // eslint-disable-line react-hooks/exhaustive-deps
 
-  const initializeMap = () => {
+  async function initializeMap() {
     if (!mapRef.current || !window.google) return
 
     const centerLat = airports.reduce((sum, a) => sum + a.lat, 0) / airports.length
     const centerLng = airports.reduce((sum, a) => sum + a.lng, 0) / airports.length
 
-    const map = new window.google.maps.Map(mapRef.current, {
+    const [{ Map: GoogleMap }, { AdvancedMarkerElement }] = await Promise.all([
+      window.google.maps.importLibrary("maps"),
+      window.google.maps.importLibrary("marker"),
+    ])
+    const map = new GoogleMap(mapRef.current, {
       zoom: 4,
       center: { lat: centerLat, lng: centerLng },
       mapTypeId: "satellite",
       disableDefaultUI: true,   // kills ALL native controls; we supply our own
+      mapId: process.env.NEXT_PUBLIC_GOOGLE_MAP_ID || "DEMO_MAP_ID",
     })
     mapInstanceRef.current = map
-    placesServiceRef.current = new window.google.maps.places.PlacesService(map)
 
     airports.forEach((airport) => {
       const wx = weatherMapRef.current[airport.icao]
-      const color = wx?.category ? CATEGORY_STYLES[wx.category].markerHex : "#6b7280"
+      const color = wx?.category && !isWeatherStale(wx) ? CATEGORY_STYLES[wx.category].markerHex : "#6b7280"
 
-      const marker = new window.google.maps.Marker({
+      const marker = new AdvancedMarkerElement({
         position: { lat: airport.lat, lng: airport.lng },
-        map,
         title: airport.name,
-        visible: filteredIcaos.has(airport.icao),
-        icon: {
-          ...makeMarkerIcon(airport.icao, color),
-          scaledSize: new window.google.maps.Size(44, 54),
-          anchor: new window.google.maps.Point(22, 18),
-        },
+        map: filteredIcaos.has(airport.icao) ? map : null,
+        content: makeMarkerContent(airport.icao, color),
+        gmpClickable: true,
       })
       markersMapRef.current.set(airport.icao, marker)
 
@@ -332,7 +334,7 @@ export function MapComponent({ airports, filteredIcaos, apiKey, weatherMap, favo
           const topRight = projection.fromLatLngToPoint(bounds.getNorthEast())
           const bottomLeft = projection.fromLatLngToPoint(bounds.getSouthWest())
           const scale = Math.pow(2, map.getZoom())
-          const pt = projection.fromLatLngToPoint(marker.getPosition())
+          const pt = projection.fromLatLngToPoint(new window.google.maps.LatLng(airport.lat, airport.lng))
 
           const x = (pt.x - bottomLeft.x) * scale
           const y = (pt.y - topRight.y) * scale
@@ -362,9 +364,9 @@ export function MapComponent({ airports, filteredIcaos, apiKey, weatherMap, favo
       }
 
       // Desktop: hover shows floating popup
-      marker.addListener("mouseover", () => showPopup())
+      marker.addEventListener("mouseenter", () => showPopup())
 
-      marker.addListener("mouseout", () => {
+      marker.addEventListener("mouseleave", () => {
         hideTimeoutRef.current = setTimeout(() => {
           if (!isOverPopupRef.current) setHoverData(null)
         }, 120)
@@ -372,7 +374,7 @@ export function MapComponent({ airports, filteredIcaos, apiKey, weatherMap, favo
 
       // Mobile tap: shows bottom sheet (position = null)
       // Also fires on desktop click — we check pointer type at call time
-      marker.addListener("click", () => {
+      marker.addEventListener("gmp-click", () => {
         // Only activate click-to-sheet on touch devices.
         // On desktop, hover already handles it; eat the click silently.
         const isTouch = window.matchMedia("(pointer: coarse)").matches

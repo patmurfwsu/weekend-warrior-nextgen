@@ -51,14 +51,18 @@ export default function SubmitPage() {
     setError(null)
 
     formData.set("icao", icao)
-    const result = await submitAirport(formData)
-
-    if (result.success) {
-      setSuccess(true)
-    } else {
-      setError(result.error || "Something went wrong.")
+    try {
+      const result = await submitAirport(formData)
+      if (result.success) {
+        setSuccess(true)
+      } else {
+        setError(result.error || "Something went wrong.")
+      }
+    } catch {
+      setError("Submission service is unavailable. Please try again later.")
+    } finally {
+      setPending(false)
     }
-    setPending(false)
   }
 
   return (
@@ -103,7 +107,11 @@ export default function SubmitPage() {
               </p>
             </div>
 
-            <form onSubmit={handleSubmit} noValidate className="space-y-5">
+            <form onSubmit={handleSubmit} noValidate className="relative space-y-5">
+              <div className="absolute left-[-10000px]" aria-hidden="true">
+                <label htmlFor="company">Company</label>
+                <input id="company" name="company" type="text" tabIndex={-1} autoComplete="off" />
+              </div>
               {/* Row: ICAO + State */}
               <div className="grid grid-cols-2 gap-4">
                 <div className="space-y-1.5">
@@ -154,6 +162,7 @@ export default function SubmitPage() {
                 <input
                   id="airportName"
                   name="airportName"
+                  maxLength={120}
                   placeholder="Camarillo Airport"
                   className={`w-full px-3 py-2 text-sm border rounded-md bg-background text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-ring ${
                     fieldErrors.airportName ? "border-destructive" : "border-input"
@@ -172,6 +181,7 @@ export default function SubmitPage() {
                 <input
                   id="restaurantName"
                   name="restaurantName"
+                  maxLength={120}
                   placeholder="Waypoint Cafe"
                   className={`w-full px-3 py-2 text-sm border rounded-md bg-background text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-ring ${
                     fieldErrors.restaurantName ? "border-destructive" : "border-input"
@@ -191,6 +201,7 @@ export default function SubmitPage() {
                   id="description"
                   name="description"
                   rows={3}
+                  maxLength={1000}
                   placeholder="What makes this place worth the flight?"
                   className={`w-full px-3 py-2 text-sm border rounded-md bg-background text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-ring resize-none ${
                     fieldErrors.description ? "border-destructive" : "border-input"
@@ -210,6 +221,7 @@ export default function SubmitPage() {
                     <input
                       id="submitterName"
                       name="submitterName"
+                      maxLength={100}
                       placeholder="Amelia Earhart"
                       className="w-full px-3 py-2 text-sm border border-input rounded-md bg-background text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-ring"
                     />
@@ -220,6 +232,7 @@ export default function SubmitPage() {
                       id="submitterEmail"
                       name="submitterEmail"
                       type="email"
+                      maxLength={254}
                       placeholder="pilot@example.com"
                       className={`w-full px-3 py-2 text-sm border rounded-md bg-background text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-ring ${
                         fieldErrors.submitterEmail ? "border-destructive" : "border-input"

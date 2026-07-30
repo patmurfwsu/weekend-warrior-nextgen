@@ -3,7 +3,7 @@
 import Link from "next/link"
 import type { Airport } from "@/lib/airport-data"
 import type { WeatherData } from "@/lib/weather"
-import { CATEGORY_STYLES } from "@/lib/weather"
+import { CATEGORY_STYLES, isWeatherStale } from "@/lib/weather"
 import { MapPin, Star, Fuel, Clock } from "lucide-react"
 import { NavigateDropdown } from "@/components/navigate-dropdown"
 
@@ -29,7 +29,7 @@ export function AirportList({ airports, weatherMap, favorites, onToggleFavorite 
     <div className="w-full max-w-5xl mx-auto px-4 sm:px-6 py-6 space-y-3">
       {airports.map((airport) => {
         const wx = weatherMap[airport.icao]
-        const wxStyle = wx?.category ? CATEGORY_STYLES[wx.category] : null
+        const wxStyle = wx?.category && !isWeatherStale(wx) ? CATEGORY_STYLES[wx.category] : null
         const isFavorite = favorites.has(airport.icao)
 
         return (

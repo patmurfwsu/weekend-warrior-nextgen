@@ -22,7 +22,7 @@ export function NavigateDropdown({ icao, variant = "list" }: NavigateDropdownPro
       className={buttonClass}
     >
       <Navigation className="w-3 h-3" />
-      Navigate
+      Open chart
     </a>
   )
 }

@@ -151,7 +151,7 @@ export default async function AirportPage({
           <h3 className="text-sm font-semibold text-foreground mb-3">Pilot Resources</h3>
           <div className="flex flex-wrap gap-2">
             <a
-              href={`foreflight://airports/${airport.icao}`}
+              href={`foreflightmobile://maps/search?q=${encodeURIComponent(airport.icao)}`}
               className="inline-flex items-center gap-1.5 px-3 py-1.5 text-xs font-medium border border-border rounded-lg hover:bg-muted transition-colors"
             >
               <ExternalLink className="w-3 h-3" />
