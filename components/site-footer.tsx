@@ -10,6 +10,7 @@ export function SiteFooter() {
         </Link>
         <div className="flex items-center gap-5 mission-label text-primary/70">
           <Link href="/map" className="hover:text-primary">Explore</Link>
+          <Link href="/events" className="hover:text-primary">Events</Link>
           <Link href="/submit" className="hover:text-primary">Submit</Link>
           <Link href="/donate" className="hover:text-primary">Support</Link>
         </div>

@@ -5,6 +5,8 @@ import { NearbyAirports } from "@/components/nearby-airports"
 import { HeroSearch } from "@/components/hero-search"
 import { SiteHeader } from "@/components/site-header"
 import { SiteFooter } from "@/components/site-footer"
+import { NearbyEvents } from "@/components/nearby-events"
+import { getUpcomingEvents } from "@/lib/event-data"
 
 /* ── Targeting-corner bracket helper ──────────────────────── */
 function TargetCorners({ className = "" }: { className?: string }) {
@@ -33,6 +35,8 @@ function StarDivider({ stars = 3, light = false }: { stars?: number; light?: boo
 }
 
 export default function HomePage() {
+  const upcomingEvents = getUpcomingEvents()
+
   return (
     <div className="min-h-screen bg-background">
 
@@ -129,6 +133,9 @@ export default function HomePage() {
           AIRPORTS NEAR YOU
           ════════════════════════════════════════════════════════ */}
       <NearbyAirports airports={airports} />
+
+      {/* Upcoming aviation experiences, maintained by the Event Scout */}
+      <NearbyEvents events={upcomingEvents} />
 
       {/* ════════════════════════════════════════════════════════
           FIELD ORDERS — how it works
