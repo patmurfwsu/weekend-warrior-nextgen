@@ -1,5 +1,5 @@
 import Link from "next/link"
-import { MapPin, UtensilsCrossed, PlusCircle, Plane } from "lucide-react"
+import { CalendarRange, UtensilsCrossed, PlusCircle, Plane } from "lucide-react"
 import { airports } from "@/lib/airport-data"
 import { NearbyAirports } from "@/components/nearby-airports"
 import { HeroSearch } from "@/components/hero-search"
@@ -91,8 +91,8 @@ export default function HomePage() {
 
           {/* Typewriter sub-copy */}
           <p className="mt-5 text-sm sm:text-base font-stamp text-white/55 max-w-sm drop-shadow tracking-wide leading-relaxed">
-            The best on-airport restaurants across the U.S.<br />
-            Scouted and rated by fellow GA pilots.
+            Restaurants, fly-ins, airshows, and reasons to go.<br />
+            Curated for fun flights with family and friends.
           </p>
 
           {/* Star divider */}
@@ -113,7 +113,7 @@ export default function HomePage() {
               transition-all shadow-2xl"
           >
             <Plane className="w-4 h-4" />
-            Scramble the Map
+            Explore Destinations
           </Link>
 
           {/* Hero search */}
@@ -154,14 +154,14 @@ export default function HomePage() {
               <span className="h-px flex-1 max-w-[3rem] bg-border/60" />
             </div>
             <h2 className="font-display font-bold text-foreground uppercase text-3xl sm:text-4xl tracking-tight leading-none mb-4">
-              Your Mission: $100 Hamburger
+              Your Mission: Find a Reason to Fly
             </h2>
             <StarDivider />
             <p className="font-stamp text-muted-foreground max-w-2xl leading-relaxed mt-4 text-[0.92rem]">
               The <span className="text-foreground font-medium">&ldquo;$100 hamburger&rdquo;</span> is a beloved GA tradition —
               named for the irony that a short local flight burns enough fuel to cost roughly $100 for a $12 burger.
-              Weekend Warrior maps every on-airport restaurant we&apos;ve found so you can turn a Saturday morning into a
-              proper fly-out with almost no planning.
+              Weekend Warrior brings together on-airport restaurants and upcoming aviation events so you can turn a
+              free morning or weekend into a memorable fly-out with family and friends.
             </p>
           </div>
 
@@ -175,8 +175,7 @@ export default function HomePage() {
               </h3>
               <div className="w-6 h-0.5 bg-primary/40 mb-3" />
               <p className="font-stamp text-sm text-muted-foreground leading-relaxed">
-                Browse the map or search by airport code, name, or state. Tap any marker for restaurant photos,
-                ratings, and reviews.
+                Discover an on-airport restaurant on the map or browse upcoming fly-ins, airshows, and family events.
               </p>
               <div className="absolute -left-[5px] top-0 w-2 h-2 rounded-full bg-primary/50" />
             </div>
@@ -185,12 +184,11 @@ export default function HomePage() {
             <div className="relative pl-5 border-l-2 border-primary/30">
               <p className="mission-label text-[oklch(0.67_0.13_72)] mb-2 tracking-[0.25em]">Order — 02</p>
               <h3 className="font-display font-bold text-foreground uppercase tracking-wide text-lg leading-tight mb-2">
-                Check the Weather
+                Confirm the Details
               </h3>
               <div className="w-6 h-0.5 bg-primary/40 mb-3" />
               <p className="font-stamp text-sm text-muted-foreground leading-relaxed">
-                Live METARs update every 10 minutes. Marker colors tell you at a glance — green is VFR, red is IFR.
-                Plan your fuel stop around the food.
+                Check restaurant hours or the organizer&apos;s official event page, then confirm airport access and ground logistics.
               </p>
               <div className="absolute -left-[5px] top-0 w-2 h-2 rounded-full bg-primary/50" />
             </div>
@@ -199,12 +197,11 @@ export default function HomePage() {
             <div className="relative pl-5 border-l-2 border-primary/30">
               <p className="mission-label text-[oklch(0.67_0.13_72)] mb-2 tracking-[0.25em]">Order — 03</p>
               <h3 className="font-display font-bold text-foreground uppercase tracking-wide text-lg leading-tight mb-2">
-                Land &amp; Eat
+                Bring Your Crew
               </h3>
               <div className="w-6 h-0.5 bg-primary/40 mb-3" />
               <p className="font-stamp text-sm text-muted-foreground leading-relaxed">
-                Taxi to the ramp, walk in, and order. You&apos;ve earned your $100 hamburger. Save favorites to build your
-                own fly-out bucket list.
+                Make the flight the start of the experience—share a meal, attend an event, and create a day worth remembering.
               </p>
               <div className="absolute -left-[5px] top-0 w-2 h-2 rounded-full bg-primary/50" />
             </div>
@@ -223,7 +220,7 @@ export default function HomePage() {
               ◈ Intelligence Report ◈
             </p>
             <h2 className="font-display font-bold text-[oklch(0.88_0.03_85)] uppercase text-3xl sm:text-4xl tracking-tight mb-2">
-              Your Complete Tactical Kit
+              Your Inspiration Toolkit
             </h2>
             <StarDivider light />
           </div>
@@ -234,30 +231,30 @@ export default function HomePage() {
             <div className="riveted relative bg-[oklch(0.92_0.04_85)] border border-[oklch(0.68_0.05_78)] p-7 pt-9 group hover:border-[oklch(0.67_0.13_72/0.7)] hover:shadow-[0_0_20px_oklch(0.67_0.13_72/0.12)] transition-all">
               {/* Unit badge */}
               <div className="absolute -top-4 left-1/2 -translate-x-1/2 w-8 h-8 rounded-full border-2 border-[oklch(0.30_0.08_130)] bg-[oklch(0.92_0.04_85)] flex items-center justify-center">
-                <MapPin className="w-4 h-4 text-primary" />
+                <UtensilsCrossed className="w-4 h-4 text-primary" />
               </div>
-              <p className="mission-label text-primary mb-2 tracking-[0.2em]">Nav · 01</p>
+              <p className="mission-label text-primary mb-2 tracking-[0.2em]">Dining · 01</p>
               <h3 className="font-display font-bold text-foreground uppercase tracking-wide text-base mb-3">
-                Find Airports
+                Discover Restaurants
               </h3>
               <div className="w-8 h-0.5 bg-accent/40 mb-3" />
               <p className="font-stamp text-sm text-muted-foreground leading-relaxed">
-                Search by name, ICAO code, or state. Filter the map or browse a list — your choice.
+                Explore on-airport dining by airport, ICAO code, or state and see what makes each stop worth the flight.
               </p>
             </div>
 
             {/* Card 2 */}
             <div className="riveted relative bg-[oklch(0.92_0.04_85)] border border-[oklch(0.68_0.05_78)] p-7 pt-9 group hover:border-[oklch(0.67_0.13_72/0.7)] hover:shadow-[0_0_20px_oklch(0.67_0.13_72/0.12)] transition-all">
               <div className="absolute -top-4 left-1/2 -translate-x-1/2 w-8 h-8 rounded-full border-2 border-[oklch(0.67_0.13_72)] bg-[oklch(0.92_0.04_85)] flex items-center justify-center">
-                <UtensilsCrossed className="w-4 h-4 text-accent" />
+                <CalendarRange className="w-4 h-4 text-accent" />
               </div>
               <p className="mission-label text-[oklch(0.67_0.13_72)] mb-2 tracking-[0.2em]">Intel · 02</p>
               <h3 className="font-display font-bold text-foreground uppercase tracking-wide text-base mb-3">
-                Discover Restaurants
+                Find Upcoming Events
               </h3>
               <div className="w-8 h-0.5 bg-accent/40 mb-3" />
               <p className="font-stamp text-sm text-muted-foreground leading-relaxed">
-                Real photos, ratings, and reviews pulled live from Google Maps on every marker.
+                Browse verified fly-ins, airshows, museum days, and family aviation experiences near you.
               </p>
             </div>
 
@@ -272,7 +269,7 @@ export default function HomePage() {
               </h3>
               <div className="w-8 h-0.5 bg-accent/40 mb-3" />
               <p className="font-stamp text-sm text-muted-foreground leading-relaxed">
-                Know a hidden gem not on the map? Submit it and help the community grow.
+                Know a hidden restaurant not on the map? Submit it and help pilots find another reason to fly.
               </p>
             </div>
           </div>
@@ -306,7 +303,7 @@ export default function HomePage() {
             <StarDivider />
 
             <p className="font-stamp text-muted-foreground mt-3 mb-8 text-base">
-              {airports.length} airports across the country — and growing.
+              {airports.length} restaurant destinations plus a curated radar of upcoming aviation events.
             </p>
 
             <Link
