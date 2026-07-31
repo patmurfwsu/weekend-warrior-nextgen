@@ -23,6 +23,7 @@ export function SiteHeader({ compact = false, showBackToHome = false }: SiteHead
         </div>
         <nav aria-label="Primary navigation" className="flex shrink-0 items-center gap-3 sm:gap-6">
           <Link href="/map" className="mission-label hidden text-primary/75 transition-colors hover:text-primary sm:block">Explore</Link>
+          <Link href="/events" className="mission-label hidden text-primary/75 transition-colors hover:text-primary sm:block">Events</Link>
           <Link href="/submit" className="mission-label hidden text-primary/75 transition-colors hover:text-primary md:block">Submit Airport</Link>
           <Link href="/donate" className="mission-label inline-flex items-center gap-1.5 text-primary/75 transition-colors hover:text-primary">
             <Heart className="h-3.5 w-3.5" /><span className="hidden sm:inline">Support</span>

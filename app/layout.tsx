@@ -19,22 +19,22 @@ const specialElite = Special_Elite({
 export const metadata: Metadata = {
   metadataBase: new URL(process.env.NEXT_PUBLIC_SITE_URL || "https://weekendwarrior.flights"),
   title: {
-    default: "Weekend Warrior — Find Your Next $100 Hamburger",
+    default: "Weekend Warrior — Find Your Next GA Adventure",
     template: "%s | Weekend Warrior",
   },
   description:
-    "Discover the best on-airport restaurants across the US. Search, filter, and explore on-field dining for general aviation pilots.",
+    "Discover on-airport restaurants, fly-ins, airshows, and aviation experiences for fun flights with family and friends.",
   openGraph: {
-    title: "Weekend Warrior — Find Your Next $100 Hamburger",
+    title: "Weekend Warrior — Find Your Next GA Adventure",
     description:
-      "Discover the best on-airport restaurants across the US. Search, filter, and explore on-field dining for general aviation pilots.",
+      "Discover on-airport restaurants, fly-ins, airshows, and aviation experiences for fun flights with family and friends.",
     images: [{ url: "/runway-background.png", width: 1200, height: 630, alt: "Weekend Warrior" }],
     type: "website",
   },
   twitter: {
     card: "summary_large_image",
-    title: "Weekend Warrior — Find Your Next $100 Hamburger",
-    description: "The best on-airport restaurants across the US, for GA pilots.",
+    title: "Weekend Warrior — Find Your Next GA Adventure",
+    description: "Restaurants, events, and memorable destinations for general aviation pilots.",
     images: ["/runway-background.png"],
   },
 }

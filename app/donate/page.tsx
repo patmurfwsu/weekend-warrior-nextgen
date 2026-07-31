@@ -27,7 +27,7 @@ export default function DonatePage() {
             </div>
             <h2 className="text-3xl sm:text-4xl font-bold text-foreground">Support Weekend Warrior</h2>
             <p className="text-muted-foreground max-w-xl mx-auto">
-              Your support helps us find and verify more $100 hamburger spots across the country. Every contribution goes toward keeping the map free and growing.
+              Your support helps us find and verify more restaurant destinations and upcoming aviation events. Every contribution keeps Weekend Warrior free and growing.
             </p>
           </div>
 
