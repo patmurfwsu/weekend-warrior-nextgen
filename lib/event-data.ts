@@ -23,24 +23,6 @@ export interface AviationEvent {
 // official organizer or aviation-organization source and include a verification date.
 export const aviationEvents: AviationEvent[] = [
   {
-    id: "seafair-2026",
-    title: "Boeing Seafair Air Show",
-    startDate: "2026-08-01",
-    endDate: "2026-08-02",
-    type: "airshow",
-    locationName: "Lake Washington",
-    cityState: "Seattle, WA",
-    associatedAirport: "KBFI",
-    lat: 47.6062,
-    lng: -122.2015,
-    summary: "A waterfront airshow weekend featuring the U.S. Navy Blue Angels.",
-    arrivalGuidance: "Not a fly-in. Review the official event site and local airspace restrictions before planning.",
-    officialUrl: "https://www.blueangels.navy.mil/assets/docs/schedules/show-2026.pdf",
-    sourceName: "U.S. Navy Blue Angels",
-    verifiedOn: "2026-07-31",
-    featured: true,
-  },
-  {
     id: "oregon-international-air-show-2026",
     title: "Oregon International Air Show",
     startDate: "2026-08-15",
@@ -55,7 +37,7 @@ export const aviationEvents: AviationEvent[] = [
     arrivalGuidance: "Airshow operations may limit airport access. Confirm arrival procedures with the organizer.",
     officialUrl: "https://www.blueangels.navy.mil/assets/docs/schedules/show-2026.pdf",
     sourceName: "U.S. Navy Blue Angels",
-    verifiedOn: "2026-07-31",
+    verifiedOn: "2026-08-06",
     featured: true,
   },
   {
@@ -69,11 +51,11 @@ export const aviationEvents: AviationEvent[] = [
     associatedAirport: "KBIL",
     lat: 45.8077,
     lng: -108.5429,
-    summary: "A two-day aviation event scheduled to feature the U.S. Navy Blue Angels.",
+    summary: "A two-day Billings airport airshow with U.S. Navy Blue Angels performances.",
     arrivalGuidance: "Not presented as a fly-in. Check the organizer's spectator and airport-access instructions.",
-    officialUrl: "https://www.blueangels.navy.mil/assets/docs/schedules/show-2026.pdf",
-    sourceName: "U.S. Navy Blue Angels",
-    verifiedOn: "2026-07-31",
+    officialUrl: "https://www.yellowstoneairshow.com/tickets/ticketinfo",
+    sourceName: "Yellowstone International Air Show",
+    verifiedOn: "2026-08-06",
   },
   {
     id: "air-capital-fly-in-2026",
@@ -90,7 +72,7 @@ export const aviationEvents: AviationEvent[] = [
     arrivalGuidance: "Fly-in event. Review KAAO procedures and nearby Class D airspace before departure.",
     officialUrl: "https://chapters.eaa.org/eaa88",
     sourceName: "EAA Chapter 88",
-    verifiedOn: "2026-07-31",
+    verifiedOn: "2026-08-06",
     featured: true,
   },
   {
@@ -108,7 +90,7 @@ export const aviationEvents: AviationEvent[] = [
     arrivalGuidance: "The show venue is an operating airport with event restrictions. Do not assume fly-in access.",
     officialUrl: "https://www.blueangels.navy.mil/assets/docs/schedules/show-2026.pdf",
     sourceName: "U.S. Navy Blue Angels",
-    verifiedOn: "2026-07-31",
+    verifiedOn: "2026-08-06",
     featured: true,
   },
   {
@@ -126,7 +108,7 @@ export const aviationEvents: AviationEvent[] = [
     arrivalGuidance: "Private-use field. Review the chapter's current arrival information before flying in.",
     officialUrl: "https://chapters.eaa.org/eaa129/fly-in-events",
     sourceName: "EAA Chapter 129",
-    verifiedOn: "2026-07-31",
+    verifiedOn: "2026-08-06",
   },
   {
     id: "roads-and-runways-2026",
@@ -143,7 +125,7 @@ export const aviationEvents: AviationEvent[] = [
     arrivalGuidance: "Museum event, not automatically a fly-in. Confirm airport access separately.",
     officialUrl: "https://www.eaa.org/eaa/about-eaa/eaa-media-room/eaa-news-releases/new-museum-events-2026",
     sourceName: "Experimental Aircraft Association",
-    verifiedOn: "2026-07-31",
+    verifiedOn: "2026-08-06",
   },
   {
     id: "mcas-miramar-air-show-2026",
@@ -160,7 +142,7 @@ export const aviationEvents: AviationEvent[] = [
     arrivalGuidance: "Military installation—not a GA fly-in. Follow official spectator access instructions.",
     officialUrl: "https://www.blueangels.navy.mil/assets/docs/schedules/show-2026.pdf",
     sourceName: "U.S. Navy Blue Angels",
-    verifiedOn: "2026-07-31",
+    verifiedOn: "2026-08-06",
   },
   {
     id: "grand-junction-air-show-2026",
@@ -177,7 +159,7 @@ export const aviationEvents: AviationEvent[] = [
     arrivalGuidance: "Check event-day airport restrictions and use the official organizer's access guidance.",
     officialUrl: "https://www.blueangels.navy.mil/assets/docs/schedules/show-2026.pdf",
     sourceName: "U.S. Navy Blue Angels",
-    verifiedOn: "2026-07-31",
+    verifiedOn: "2026-08-06",
   },
   {
     id: "scaleventure-2026",
@@ -194,7 +176,7 @@ export const aviationEvents: AviationEvent[] = [
     arrivalGuidance: "Museum event, not automatically a fly-in. Confirm airport access separately.",
     officialUrl: "https://www.eaa.org/eaa/about-eaa/eaa-media-room/eaa-news-releases/new-museum-events-2026",
     sourceName: "Experimental Aircraft Association",
-    verifiedOn: "2026-07-31",
+    verifiedOn: "2026-08-06",
   },
 ]
 
